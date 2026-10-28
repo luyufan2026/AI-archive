@@ -1,0 +1,58 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: #f5f5f5; color: #111; font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 1.5; }
+.app { max-width: 1240px; margin: 0 auto; padding: 36px 24px; }
+h1 { margin: 0 0 8px; font-size: 32px; }
+h2 { font-size: 20px; }
+h3 { font-size: 16px; }
+p { margin: 8px 0; }
+a { color: #222; text-decoration: underline; text-underline-offset: 3px; }
+button, select { min-height: 44px; padding: 8px 12px; border: 1px solid #888; border-radius: 0; color: #111; background: #fff; font: inherit; }
+button { cursor: pointer; }
+button:disabled { color: #666; cursor: default; }
+button[aria-pressed='true'] { background: #ddd; border: 2px solid #111; font-weight: bold; }
+:where(button, select, input, summary, a, .table-scroll):focus-visible { outline: 2px solid #111; outline-offset: 3px; }
+.prototype-note, .small-text { color: #555; font-size: 13px; }
+.page-header { margin-bottom: 20px; }
+.archive-note { padding: 12px 16px; border: 1px solid #aaa; background: #eee; font-size: 14px; }
+.view-switch { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0; }
+.filter-bar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding: 20px; background: #eee; border: 1px solid #aaa; align-items: end; }
+.filter-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+label { font-weight: bold; }
+select { width: 100%; }
+.result-count, .compare-hint { margin: 20px 0 16px; font-size: 14px; }
+.archive-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.archive-card { display: flex; flex-direction: column; min-width: 0; padding: 20px; border: 1px solid #aaa; background: #fff; overflow-wrap: anywhere; }
+.family-name { margin: 0 0 8px; font-size: 13px; color: #555; }
+.archive-card h2 { margin: 0 0 16px; }
+.metadata { margin: 0; font-size: 14px; }
+.metadata div + div { margin-top: 10px; }
+.metadata dt { font-weight: bold; }
+.metadata dd { margin: 0; }
+.price-block { margin-top: 20px; border-top: 1px solid #ccc; padding-top: 12px; }
+.price-block h3 { margin: 0; }
+.price-values { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+.price-values dt { font-size: 13px; }
+.price-values dd { margin: 0; font-size: 22px; font-weight: bold; }
+.price-basis { font-weight: bold; }
+.company-details { margin: 16px 0; border-top: 1px solid #ccc; padding-top: 12px; }
+summary { cursor: pointer; font-size: 14px; font-weight: bold; }
+.company-details .metadata { margin-top: 12px; }
+.stock-quote { border: 1px solid #bbb; padding: 12px; margin: 16px 0; font-size: 14px; }
+.source-links { display: flex; flex-wrap: wrap; gap: 8px 16px; padding: 0; list-style: none; font-size: 13px; }
+.card-bottom { margin-top: auto; padding-top: 12px; }
+.compare-choice { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; font-weight: normal; cursor: pointer; }
+.compare-choice input { width: 18px; height: 18px; margin: 2px 0 0; flex: 0 0 auto; accent-color: #333; }
+.comparison { border: 1px solid #aaa; background: #fff; padding: 16px; margin-top: 24px; }
+.section-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.section-heading h2 { margin: 0; }
+.table-scroll { overflow-x: auto; margin-top: 16px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { border: 1px solid #bbb; padding: 12px; min-width: 170px; vertical-align: top; text-align: left; }
+th { background: #eee; }
+.remove-compare { display: block; margin-top: 8px; min-height: 36px; padding: 4px 8px; font-size: 13px; }
+.empty-state { border: 1px solid #aaa; padding: 24px; background: #fff; }
+.section-title { margin-top: 0; }
+.company-card .stock-quote { margin-top: 16px; }
+.page-footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #aaa; font-size: 13px; color: #555; }
+@media (max-width: 1000px) { .archive-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .app { padding: 24px 16px; } .archive-grid, .filter-bar { grid-template-columns: minmax(0, 1fr); } }
