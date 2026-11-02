@@ -1,33 +1,33 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { rankModelsForDesk } from '../utils/recommendation.js';
 import { formatPrice } from '../utils/archive.js';
 
 export default function LiveModelDesk({ models, recipe, onInspect, onCompare, motionPaused }) {
-  const ranked = rankModelsForDesk(models, recipe.selected, recipe.budget, recipe.usage);
+  const ranked = useMemo(() => rankModelsForDesk(models, recipe.selected, recipe.budget, recipe.usage), [models, recipe.selected, recipe.budget, recipe.usage]);
   const nodes = useRef(new Map());
   const previous = useRef(new Map());
   const [moves, setMoves] = useState({});
   const signature = ranked.map((item) => `${item.model.id}:${item.fit}:${item.eligible}`).join('|');
   useLayoutEffect(() => {
     const next = new Map(); const changes = {}; const animations = [];
-    ranked.forEach(({ model }, index) => {
-      const node = nodes.current.get(model.id);
-      if (!node) return;
-      node.getAnimations().forEach((animation) => animation.cancel());
+    const entries = ranked.map(({ model }, index) => ({ id: model.id, index, node: nodes.current.get(model.id) })).filter(({ node }) => node);
+    // Finish all writes, then measure all cards together, then start transforms.
+    entries.forEach(({ node }) => node.getAnimations().forEach((animation) => animation.cancel()));
+    const parentRect = entries[0]?.node.parentElement.getBoundingClientRect();
+    const measured = entries.map(({ id, index, node }) => {
       const rect = node.getBoundingClientRect();
-      const parentRect = node.parentElement.getBoundingClientRect();
-      const position = { left: rect.left - parentRect.left, top: rect.top - parentRect.top };
-      const before = previous.current.get(model.id);
-      next.set(model.id, { ...position, rank: index });
-      if (before && before.rank !== index) {
-        changes[model.id] = before.rank - index;
-        if (!motionPaused && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          animations.push(node.animate([
-            { transform: `translate(${before.left - position.left}px, ${before.top - position.top}px)`, zIndex: 5 },
-            { transform: 'translate(0, 0)', zIndex: 1 },
-          ], { duration: 780, easing: 'cubic-bezier(.22,.72,.2,1)' }));
-        }
-      }
+      const position = { left: rect.left - parentRect.left, top: rect.top - parentRect.top, rank: index };
+      next.set(id, position);
+      return { id, index, node, position, before: previous.current.get(id) };
+    });
+    const animate = !motionPaused && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    measured.forEach(({ id, index, node, position, before }) => {
+      if (!before || before.rank === index) return;
+      changes[id] = before.rank - index;
+      if (animate) animations.push(node.animate([
+        { transform: `translate3d(${before.left - position.left}px, ${before.top - position.top}px, 0)` },
+        { transform: 'translate3d(0, 0, 0)' },
+      ], { duration: 650, easing: 'cubic-bezier(.22,.72,.2,1)' }));
     });
     previous.current = next;
     setMoves(changes);

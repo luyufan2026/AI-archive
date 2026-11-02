@@ -17,6 +17,7 @@ export function filterAndSort(items, { family = 'all', type = 'all', specialty =
   return filtered;
 }
 
+const priceFormatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 3 });
 export function formatPrice(value) {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 3 }).format(value);
+  return priceFormatter.format(value);
 }

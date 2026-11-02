@@ -4,7 +4,7 @@ import React from 'react';
 function Pencil({ d, light = false, copies = 2 }) {
   return <g className={light ? 'pencil-line light' : 'pencil-line'}>{Array.from({ length: copies }, (_, i) => <path key={i} d={d} transform={`translate(${i * 1.15} ${i * -.65})`} opacity={i ? .28 : .75} />)}</g>;
 }
-export function ComputerDrawing() {
+function ComputerDrawingImpl() {
   return <svg viewBox="0 0 500 420" aria-hidden="true"><g fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M61 31L417 42L439 292L40 302Z" fill="var(--desk-paper)" /><Pencil d="M61 31L417 42L439 292L40 302L61 31 M417 42L454 66L472 277L439 292 M73 52L399 60L414 253L59 261Z" />
     <path d="M83 68L387 75L399 239L72 246Z" fill="var(--screen-paper)" /><Pencil d="M83 68L387 75L399 239L72 246Z M61 270L415 263 M106 305L104 325L354 319L359 297 M37 340L394 325L475 380L10 400Z M10 400L16 411L480 391L475 380" />
@@ -14,13 +14,13 @@ export function ComputerDrawing() {
     <Pencil d="M373 279l7 -1 M390 279l8 -1" /><circle cx="76" cy="280" r="4" /><path d="M325 365l60 -3l21 12l-92 5Z" />
   </g></svg>;
 }
-export function CompareDrawing() {
+function CompareDrawingImpl() {
   return <svg viewBox="0 0 330 220" aria-hidden="true"><g fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"><path d="M25 45L165 24L189 183L45 207Z" fill="var(--desk-paper)"/><path d="M139 21L299 37L285 202L124 185Z" fill="var(--desk-paper)"/><Pencil d="M25 45L165 24L189 183L45 207Z M139 21L299 37L285 202L124 185Z M48 77L130 65 M51 91L117 82 M149 59L278 72 M146 75L253 86 M138 153L271 168 M136 165L234 177"/><Pencil light d="M19 52L40 211L176 190 M303 45L289 207L129 193 M150 31L287 44"/><path d="M61 39q-8-29 4-29q12 0 5 28q-5 8-7 0l2-23"/><path d="M253 28q-9-22 1-25q11-1 6 28"/></g></svg>;
 }
-export function DrawerDrawing() {
+function DrawerDrawingImpl() {
   return <svg viewBox="0 0 350 220" aria-hidden="true"><g fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"><path d="M19 50L291 36L335 75L56 101Z" fill="var(--screen-paper)"/><path d="M56 101L335 75L328 199L57 214Z" fill="var(--desk-paper)"/><Pencil d="M19 50L291 36L335 75L328 199L57 214L56 101L19 50Z M56 101L335 75 M23 51L24 172L56 203 M123 115L249 107L248 166L124 175Z M160 172L217 167L217 180L162 184Z"/><Pencil light d="M67 207L320 194 M66 106L66 196 M29 61L29 164 M297 54L43 71 M305 62L47 83 M312 68L48 91"/><Pencil d="M69 51L65 21L128 17L143 35L243 30L254 44 M77 54L78 31L117 27 M91 52L94 38L236 34"/></g></svg>;
 }
-export default function DeskDrawing() {
+function DeskDrawingImpl() {
   return <svg className="desk-drawing" viewBox="0 0 1440 850" preserveAspectRatio="none" aria-hidden="true"><defs><clipPath id="pencil-window"><path d="M682 25L1220 48L1200 310L678 295Z" /></clipPath></defs><g fill="none" stroke="currentColor" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round">
     <Pencil light d="M37 12L42 580 M52 3L55 550 M1368 13L1356 586 M59 574L1361 558 M62 578L1354 565" />
     <Pencil d="M660 8L1237 34L1222 330L654 311Z M682 25L1220 48L1200 310L678 295Z M940 40L930 309 M680 170L1209 184" />
@@ -39,3 +39,8 @@ export default function DeskDrawing() {
     <path d="M163 229q-44 28-45 79m0 0l-6-15m6 15l12-10" stroke="var(--accent)" strokeWidth="1.4"/><path d="M708 669q25-15 55-11" strokeDasharray="3 7" opacity=".5"/>
   </g></svg>;
 }
+
+export const ComputerDrawing = React.memo(ComputerDrawingImpl);
+export const CompareDrawing = React.memo(CompareDrawingImpl);
+export const DrawerDrawing = React.memo(DrawerDrawingImpl);
+export default React.memo(DeskDrawingImpl);

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { companies } from '../data/archiveData.js';
 import { formatPrice } from '../utils/archive.js';
 import { formatContext } from '../data/modelProfiles.js';
 import { CompanyDetails } from './CompanyCard.jsx';
 
-export default function ArchiveCard({ item, selected, selectionFull, onToggle, onInspect, dragProps }) {
+function ArchiveCard({ item, selected, selectionFull, onToggle, onInspect, dragProps }) {
   return (
     <article className="archive-card" {...dragProps}>
       <p className="family-name">{item.family} · Record {String(item.id).padStart(2, '0')}</p>
@@ -35,8 +35,10 @@ export default function ArchiveCard({ item, selected, selectionFull, onToggle, o
       <details className="company-details"><summary>Company & stock details</summary><CompanyDetails company={companies[item.family]} /></details>
       <div className="card-bottom"><p className="file-check-stamp">LAST CHECKED <time dateTime={item.recordCheckedAt}>{item.recordCheckedAt}</time></p><button className="dossier-open" onClick={() => onInspect(item)}>Open dossier ↗</button>
         <p className="source-links"><a href={item.releaseSource} target="_blank" rel="noreferrer">Release source</a><a href={item.priceSource} target="_blank" rel="noreferrer">Price source</a></p>
-        <label className="compare-choice"><input type="checkbox" checked={selected} disabled={!selected && selectionFull} onChange={onToggle} />Compare {item.name}</label>
+        <label className="compare-choice"><input type="checkbox" checked={selected} disabled={!selected && selectionFull} onChange={() => onToggle(item.id)} />Compare {item.name}</label>
       </div>
     </article>
   );
 }
+
+export default memo(ArchiveCard);

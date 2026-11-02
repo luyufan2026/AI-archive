@@ -131,3 +131,9 @@ The studio and workspace footer link to the readable edition. This improves acce
 `rankModelsForDesk` evaluates the five verified references through the same cost, scoring and capability rules used by the final shortlist. A single need permits a labeled preview; two to five are required to pull the final files. Live files keep stable model IDs and show rank changes, reference-check dates, fit, estimated cost and any blocking reason. Historical models remain in the full archive rather than being presented as purchasable recommendations.
 
 `LiveModelDesk.jsx` measures each file relative to its list, then animates its previous and next positions using the native Web Animations API. Scrolling the page does not become part of a card’s movement. No animation library is added. Paused motion and `prefers-reduced-motion` keep immediate, unanimated updates. Every archive card includes a separate last-checked stamp; each price keeps its own historical/snapshot date.
+
+## Interaction performance
+
+Dragging updates one floating paper slip with `requestAnimationFrame` and a composited transform. React state changes at drag start/end or when crossing the drop target, rather than on every pointer move. Stable pointer bindings and memoized archive cards let unchanged cards reuse their content; search input uses a deferred query, and offscreen archive cards defer layout and painting through `content-visibility`. The five live arrangement files remain fully measured for FLIP; their layout reads happen before animation writes.
+
+The paper grain is a small static SVG tile, without a fullscreen turbulence filter or blend overlay. Rain marks remain static. Scrib retains the same line geometry in six compound SVG paths, with throttled, ref-based head tracking and motion paused while the page is hidden. These changes reduce repeated rendering and painting without changing archive data, scoring or the click/keyboard alternatives to dragging.

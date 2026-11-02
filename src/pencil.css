@@ -1,7 +1,6 @@
 :root { --desk-ground:#d4d3ce; --desk-paper:#e1e0d9; --screen-paper:#c8c8c1; --paper:#dfded7; --ink:#32322f; --muted:#6a6964; --rule:#aaa9a1; --accent:#b44832; --red:#b44832; color:var(--ink); background:var(--desk-ground); font-family:'Courier New',Courier,monospace; }
 body { background:var(--desk-ground); }
-.studio-app { position:relative; min-height:100svh; background:var(--desk-ground); }
-.studio-app::after { content:''; position:fixed; z-index:180; inset:0; pointer-events:none; opacity:.09; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='.5' filter='url(%23n)'/%3E%3C/svg%3E"); mix-blend-mode:multiply; }
+.studio-app { position:relative; min-height:100svh; background:var(--desk-ground) url('./assets/paper-grain.svg') repeat; }
 .studio-header { height:88px; padding:20px 5%; color:var(--ink); background:transparent; }
 .wordmark { font:22px/1 'Courier New',monospace; letter-spacing:-.07em; }
 .wordmark-symbol { color:var(--accent); font-size:24px; vertical-align:0; }
@@ -60,7 +59,7 @@ body { background:var(--desk-ground); }
 .paper-scene-footer p { margin:0; font-size:11px; }
 .paper-scene-footer a { white-space:nowrap; }
 .small-red-mark { color:var(--accent); font-size:18px; padding-right:8px; }
-.pencil-rain { animation:pencilRain 5s ease-in-out infinite; }
+.pencil-rain { animation:none; }
 .is-workspace::before { display:none; }
 .is-workspace .studio-header { background:var(--desk-ground); }
 .workspace-wrap { max-width:1440px; padding:110px 5% 35px; }
@@ -288,3 +287,13 @@ body { background:var(--desk-ground); }
 .pet-workspace .scrib-cargo { left:5%; top:59%; max-width:140px; font-size:8px; }
 .motion-toggle::after { display:none; }
 @media(max-width:620px) { .motion-toggle::after { display:inline; } }
+
+/* Cache the small drawing as a composited layer; the large desk stays static. */
+.scrib-figure, .scrib-cooking .scrib-figure, .scrib-cooking .scrib-arms, .scrib-doodling .scrib-arms { animation:none; }
+.scrib-body { transform-origin:50% 94%; animation:scribBreathe 4.1s ease-in-out infinite; will-change:transform; }
+.scrib-cooking .scrib-body { animation:scribMix .45s ease-in-out infinite alternate; }
+.scrib-doodling .scrib-body { animation:paperRummage 2.4s ease-in-out 1; }
+.drag-slip { will-change:transform; contain:layout style; }
+
+/* Offscreen dossiers need no layout/paint work until they approach the viewport. */
+.archive-grid .archive-card { content-visibility:auto; contain-intrinsic-size:auto 850px; }
