@@ -1,17 +1,18 @@
-# AI Archive — AI Model Metadata Archive
+# AI Archive — Manhattan Night Studio
 
-Interactive Archive 作业的 React 灰盒原型，记录 AI 模型版本的发布日期、模型类型、擅长任务、所属公司、公司所在地、上市状态、输入/输出 Token 参考价和公司或母公司股价快照。此版本不再收集或生成 AI 回答，不需要 API Key、后端、数据库或登录系统。
+An interactive AI archive and decision tool for an Interactive Archive assignment. Enter a rainy Manhattan studio, give the resident line creature a recipe, and compare AI models before choosing one. The original metadata archive is preserved inside the filing cabinet.
 
-## 安装和运行
+Live site: https://luyufan2026.github.io/AI-archive/  
+Source repository: https://github.com/luyufan2026/AI-archive
 
-需要 Node.js 20.19+ 或 22.12+；GitHub Actions 使用 Node.js 24。
+## Run locally
+
+Use Node.js 20.19+ or 22.12+ (deployment uses Node 24).
 
 ```bash
 npm install
 npm run dev
 ```
-
-打开终端给出的 Local 地址。验证及构建：
 
 ```bash
 npm test
@@ -19,72 +20,93 @@ npm run build
 npm run preview
 ```
 
-Vite 将 React JSX 编译、打包为浏览器可用的 JavaScript/CSS，输出到 `dist/`。`preview` 用于本地检查构建结果。
+React JSX is compiled by Vite into `dist/`. No API keys, login, backend, database, paid service or model API calls are required. The companion and recommendation engine run locally in the browser.
 
-## 内容与交互
+## Three ways into the studio
 
-- 20 个模型记录，ChatGPT（OpenAI GPT 系列）、Claude、Gemini、Grok、DeepSeek 各 4 个版本。
-- React `useState` 管理视图、AI family、model type、specialty、price basis、sort mode 和比较选择。
-- 按家族、模型类型、擅长任务和价格基准联合筛选；可一键重置。
-- 按模型名称、发布日期、输入价格、输出价格排序。
-- 最多选 3 个模型在表格中并列比较。筛选隐藏已选模型时，比较选择仍保留，可用 Remove 或 Clear comparison 移除。
-- Companies & stocks 视图展示 5 家公司的资料；模型卡片的 Company & stock details 也可展开。
-- 白/浅灰背景、黑字、灰边框、矩形控件和响应式 grid。没有动画、装饰图片或复杂 UI library。
+- **Find My AI:** click the CRT, then click or drag 2–5 ingredient cards into the mixing tray. Set a monthly API budget and input/output token volume. Scrib carries ingredients, pretends to mix, and serves up to three model recommendations. Once served, changing requirements, budget or volume recalculates the visible shortlist.
+- **Compare Models:** choose or drag up to three dossiers onto the comparison desk. Compare input/output rates, use cases, editorial capability meters, context, strengths, limitations and “choose this model if…” notes. The original technical/company comparison is still available in the disclosure below the desk.
+- **Explore Archive:** search, combine family/type/specialty/price-basis filters, sort by name/date/rates, inspect full dossiers, and open the original Companies & Stocks view. Selected comparison models remain selected while filtering and switching views.
 
-## 数据口径和来源
+Every drag interaction has a click alternative. Buttons support keyboard use; the native model dialog supports Escape, focus containment and a close button. A pause control stops ambient animation, and the interface respects `prefers-reduced-motion`. Mobile layouts simplify the scene and stack the workbench. In-session React state is reset on a page refresh; this prototype has no persistent account storage.
 
-数据集中放在 `src/data/archiveData.js`，每项有发布日期来源、价格来源、价格时间基准；公司资料也有来源链接。资料核对日期为 **2026-10-28**。
+## Records, prices and availability
 
-- 这是精选模型版本档案，包含历史版本，并非最新模型排行榜。ChatGPT 是产品名，档案里对应的是 OpenAI GPT 模型版本。
-- Released 表示卡片标注的公开公告、API launch 或 stable/GA 时间；不是训练开始/完成日期。不同发布阶段已在卡片里单独注明。
-- Token 价格单位统一为 **美元 / 100 万 text tokens**，分输入、输出。输入使用未缓存价格；不含批处理折扣、免费额度、工具/搜索费用、音频/图像生成价格或税。
-- **Historical** 是发布公告中的历史公开报价，保留自己的参考日期，不能当作今天的可购买报价；DeepSeek-V3、V3.1 等记录有独立的价格生效日期。
-- **Checked snapshot** 是核对当天从官方价格页记录的数值，也不会自动更新。Gemini 2.5 Pro 和 Grok 4.6 的长上下文价与卡片主价格不同，已在备注标明。
-- 擅长任务是对厂商资料的编辑归类，不是独立测试或排名。模型类型是便于筛选的概括标签。
-- 模型发布/价格主要来自 OpenAI、Anthropic、Google、xAI、DeepSeek 官方公告及文档，部分官方价格表是图片，数值经读取核对。
-- 公司上市与运营主体根据公司公告及 SEC 资料整理。DeepSeek 的所在地及私有状态另参考百科条目，卡片有链接。
-- OpenAI、Anthropic 和 DeepSeek 没有在此档案中记录可交易股价。提交 IPO 文件不等于已上市；Anthropic 的 ANT 是拟议代码，未当成可交易股票。
-- Gemini 显示的是母公司 Alphabet Class A（GOOGL）；Grok 显示的是母公司 SpaceX（SPCX），并非单独的 Gemini 或 Grok 股票。
-- 股价为 Google Finance 页面中 **2026-10-28 美东时间 16:00 的常规交易时段收盘快照**，不混用盘后价。卡片有金额、时间、公司主体和行情来源链接；网站没有实时行情订阅。
+`src/data/archiveData.js` retains **all 20 original records**, four versions each from ChatGPT/OpenAI GPT, Claude, Gemini, Grok and DeepSeek. Original release, company, price and stock fields have not been overwritten.
 
-## 对照老师截图的 React / Vite / GitHub Pages 流程
+`src/data/modelProfiles.js` adds context, modality, access, strengths/limitations and editorial fit scores, plus **three additional model references**: Claude Sonnet 5.5, DeepSeek-V4.1-Flash-1017 and Gemini 3.8 Flash. The complete archive now contains **23 dossiers**. Gemini 3.8 Flash has a recorded catalog-update month, not an invented exact launch day.
 
-1. `package.json` 包含 `react`、`react-dom`、`vite` 和 `@vitejs/plugin-react`。
-2. 根目录 `index.html` 通过 module script 加载 `src/main.jsx`。
-3. `main.jsx` 用 `createRoot` 将 React App 挂载到 HTML 的 `root` 容器。容器名字可自定，HTML 和 JS 保持一致即可。
-4. `vite.config.js` 加载 React 插件，构建生成 `dist/`。`base: './'` 让本项目的资源在 GitHub Pages 仓库子路径下也能加载；本项目没有需要服务器回退的路由。
-5. `.gitignore` 忽略 `node_modules/`、`dist/` 和环境密钥文件。
-6. `.github/workflows/deploy.yaml` 是 **Publish Site to GitHub Pages** 工作流：安装依赖 → 测试 → 构建 → 上传 `dist` → 发布 Pages。
+Five reference-verified versions, one per family, are eligible for recommendations: GPT-4.1 mini, Claude Sonnet 5.5, Gemini 3.8 Flash, Grok 4.6 and DeepSeek-V4.1-Flash-1017. Availability/model references were checked on **November 2, 2026**. Historical and retired versions remain visible for archival comparison but cannot enter the recommendation pool. Reference verified does not promise continuing access or make an old rate current.
 
-## 发布到 GitHub Pages
+Prices are **USD per one million text tokens**, split into uncached input and output. Each dossier retains its own rate date and conditions. Historical launch prices are labeled; checked snapshots do not update automatically. Long-context tiers, introductory rates and peak/off-peak conditions are recorded in the notes. The model pages and provider pricing links are visible in the dossiers. Search, tools, tax, caching discounts, free quotas and non-text prices are excluded from estimates. Image input is distinct from image generation: this collection contains text-output models, so an image-generation recipe returns an explanation instead of a fabricated match.
 
-1. 创建自己的 GitHub 作业仓库，将源码提交到 `main` 分支。不要上传 `node_modules/`；不要把整个 `dist/` 当源码维护。
-2. 仓库 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。
-3. 推送到 `main` 后工作流会自动运行；也可以在 **Actions → Publish Site to GitHub Pages → Run workflow** 手动运行。
-4. 成功后打开工作流显示的 Pages URL，确认网页和资源均正常。提交给老师的是该 URL 和源码仓库链接。
+The original company and parent-stock references remain **October 28, 2026 snapshots**, not live quotes. Private companies have no invented public ticker or quote. Gemini and Grok stock references refer to their recorded parent companies, not standalone AI-product stocks. Released dates indicate the named public launch/update phase, not training dates.
 
-工作流里的 Actions 版本与固定 commit 来自 [Vite 官方部署指南](https://vite.dev/guide/static-deploy.html)。提交前需确认这些版本仍符合所在学校/账号的 GitHub Actions 策略。
+Key recommendation references:
 
-## 文件结构
+- [OpenAI GPT-4.1 mini](https://developers.openai.com/api/docs/models/gpt-4.1-mini)
+- [Anthropic model overview](https://platform.claude.com/docs/en/models/overview) and [model lifecycle](https://platform.claude.com/docs/en/about-claude/model-deprecations)
+- [Gemini 3.8 Flash](https://aistudio.google.com/docs/models/gemini-3.8-flash) and [Gemini API pricing](https://ai.google.dev/gemini-api/docs/pricing)
+- [xAI Grok 4.6](https://docs.x.ai/developers/models/grok-4.6)
+- [DeepSeek October 17 update](https://api-docs.deepseek.com/news/news261017/) and [DeepSeek pricing](https://api-docs.deepseek.com/quick_start/pricing/)
+
+## How the recipe is scored
+
+All rules are centralized in `src/utils/recommendation.js`.
+
+1. Validate 2–5 unique recognized ingredients, a nonnegative budget, and positive total monthly token volume.
+2. Consider only reference-verified eligible versions. Search requires recorded search-tool support; image generation requires image output.
+3. Estimate monthly cost: **input volume in millions × input price + output volume in millions × output price**. Default: 1M input and 0.25M output tokens. This estimates API usage, not ChatGPT Plus or another consumer subscription. `$100+` explicitly uses a $100 comparison ceiling. A zero budget does not silently assume a free quota.
+4. Average the selected 0–10 editorial scores with equal weight, then multiply by ten and round to an integer fit score. `Cheap = clamp(10 − 3 × log10(1 + estimated monthly cost), 0, 10)`; `Long context = min(10, recorded context tokens / 100,000)`; `Powerful` averages coding, research and accuracy.
+5. Remove estimates exceeding the budget. Sort by fit descending, monthly cost ascending, then stable record ID. Return at most three, with the strongest selected contributions and a limitation.
+
+Scores are **curated editorial heuristics, not measured benchmarks, scientific probabilities or guarantees**. “Accurate” and “Research” do not establish factual correctness. Recommendations are deterministic; they are not generated by an AI model. Users should read the source and pricing conditions before purchasing API usage.
+
+Tests cover preservation of original records, filters/sorts/search, real cost cutoffs, deterministic ranking, invalid inputs and unsupported capabilities.
+
+## Components and state
+
+React `useState` manages the active room, archive filters/search/sort, comparison selection, recipe ingredients/budget/volume, companion activity, animation pause and model dialog. `useEffect` handles the brief mixing timer, pointer-following, dialog lifecycle and cleanup.
 
 ```text
-.github/workflows/deploy.yaml
 src/
+  assets/manhattan-studio.jpg
   components/
-    FilterBar.jsx
+    DragSlip.jsx
+    StudioScene.jsx
+    ScribCompanion.jsx
+    RecipeFinder.jsx
+    ComparisonDesk.jsx
+    ModelDossier.jsx
     ArchiveCard.jsx
+    FilterBar.jsx
     CompanyCard.jsx
     ComparisonTable.jsx
-  data/archiveData.js
-  utils/archive.js
+  hooks/useDeskDrag.js
+  data/
+    archiveData.js
+    modelProfiles.js
+  utils/
+    archive.js
+    recommendation.js
   App.jsx
   App.css
+  studio.css
   main.jsx
-test/archive.test.js
-index.html
-vite.config.js
-package.json
-README.md
+test/
+  archive.test.js
+  recommendation.test.js
+.github/workflows/deploy.yaml
 ```
 
-这是灰盒 prototype，重点是 archive 的数据结构、交互和构建发布流程。
+Only React, JavaScript, CSS, inline SVG and native pointer events are used. Scrib is an original seeded SVG line drawing; lightweight CSS animates breathing, carrying, mixing and ticket delivery. The room is a single compressed, AI-generated illustrative image with HTML hotspots and a small CSS rain layer. The skyline is a fictional Manhattan-inspired scene, not a live camera, weather feed or 3D simulation.
+
+## GitHub Pages / class build requirements
+
+`index.html` loads `src/main.jsx`, which mounts the React app using `createRoot`. `vite.config.js` enables the React plugin and uses `base: './'` so assets work under the repository subpath. `.gitignore` excludes `node_modules/`, `dist/`, local environment files and scratch outputs.
+
+The existing **Publish Site to GitHub Pages** workflow in `.github/workflows/deploy.yaml` installs dependencies, runs tests, builds and deploys `dist/`. Pushing to `main` triggers publication. In repository **Settings → Pages**, the source is **GitHub Actions**. A manual run is also available under **Actions → Publish Site to GitHub Pages → Run workflow**. Deployment uses the existing repository and URL.
+
+## Process and assistance
+
+OpenAI Codex assisted with **brainstorming, React component prototyping, interaction logic and debugging**. The project's concept, requirements, reference direction and design decisions were developed through the student's iterative process. The studio backdrop was created with AI image generation; the companion and interface are implemented as editable project code. This is an interactive prototype, with clearly labeled curated data and estimates, rather than a live AI service or market terminal.

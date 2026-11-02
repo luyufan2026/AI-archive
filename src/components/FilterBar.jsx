@@ -1,5 +1,8 @@
 import React from 'react';
-import { families, modelTypes, specialties } from '../data/archiveData.js';
+import { families } from '../data/archiveData.js';
+import { decisionModels } from '../data/modelProfiles.js';
+const modelTypes = [...new Set(decisionModels.map((item) => item.type))].sort();
+const specialties = [...new Set(decisionModels.flatMap((item) => item.strengths))].sort();
 
 function SelectField({ id, label, value, onChange, options }) {
   return (

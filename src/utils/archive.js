@@ -1,6 +1,7 @@
-export function filterAndSort(items, { family = 'all', type = 'all', specialty = 'all', priceBasis = 'all', sortMode = 'default' } = {}) {
+export function filterAndSort(items, { family = 'all', type = 'all', specialty = 'all', priceBasis = 'all', query = '', sortMode = 'default' } = {}) {
   const filtered = items.filter((item) => (
-    (family === 'all' || item.family === family)
+    (!query || `${item.name} ${item.family} ${item.type} ${item.strengths.join(' ')}`.toLowerCase().includes(query.trim().toLowerCase()))
+    && (family === 'all' || item.family === family)
     && (type === 'all' || item.type === type)
     && (specialty === 'all' || item.strengths.includes(specialty))
     && (priceBasis === 'all' || item.priceBasis === priceBasis)
