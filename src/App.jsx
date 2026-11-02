@@ -12,7 +12,6 @@ import { checkedAt, companies } from './data/archiveData.js';
 import { decisionModels } from './data/modelProfiles.js';
 import { defaultUsage } from './utils/recommendation.js';
 import { filterAndSort } from './utils/archive.js';
-import studioImage from './assets/manhattan-studio.jpg';
 
 const petLines = ['Still deciding? Shocking.', 'I’m all tangled up. You’re the indecisive one.', 'The most expensive one is not a personality.', 'You can click the computer. It’s not a museum.', 'Bring a budget. Leave the brand loyalty.'];
 export default function App() {
@@ -43,14 +42,14 @@ export default function App() {
   function resetFilters() { setFamily('all'); setType('all'); setSpecialty('all'); setPriceBasis('all'); setSortMode('default'); setQuery(''); }
   const isArchive = view === 'archive' || view === 'companies';
   return (
-    <div className={`studio-app ${view === 'studio' ? 'is-room' : 'is-workspace'} ${motionPaused ? 'motion-paused' : ''}`} style={{ '--studio-image': `url(${studioImage})` }}>
+    <div className={`studio-app ${view === 'studio' ? 'is-room' : 'is-workspace'} ${motionPaused ? 'motion-paused' : ''}`}>
       <DragSlip drag={archiveDrag} />
       <a className="skip-link" href="#main-content">Skip to content</a>
-      <header className="studio-header"><button className="wordmark" onClick={() => navigate('studio')} aria-label="AI Archive: back to studio">AI<span className="wordmark-symbol">✳</span>ARCHIVE<small>MANHATTAN NIGHT STUDIO</small></button><nav aria-label="Main navigation"><button aria-current={view === 'find' ? 'page' : undefined} onClick={() => navigate('find')}>Find my AI</button><button aria-current={view === 'compare' ? 'page' : undefined} onClick={() => navigate('compare')}>Compare <span>{comparisonIds.length ? `(${comparisonIds.length})` : ''}</span></button><button aria-current={isArchive ? 'page' : undefined} onClick={() => navigate('archive')}>Archive</button></nav><button className="motion-toggle" onClick={() => setMotionPaused(!motionPaused)} aria-pressed={motionPaused} aria-label={motionPaused ? 'Resume ambient motion' : 'Pause ambient motion'}>{motionPaused ? 'PLAY MOTION ▷' : 'PAUSE MOTION Ⅱ'}</button></header>
+      <header className="studio-header"><button className="wordmark" onClick={() => navigate('studio')} aria-label="AI Archive: back to studio">AI<span className="wordmark-symbol">/</span>ARCHIVE<small>MANHATTAN NIGHT STUDIO</small></button><nav aria-label="Main navigation"><button aria-current={view === 'find' ? 'page' : undefined} onClick={() => navigate('find')}>Find my AI</button><button aria-current={view === 'compare' ? 'page' : undefined} onClick={() => navigate('compare')}>Compare <span>{comparisonIds.length ? `(${comparisonIds.length})` : ''}</span></button><button aria-current={isArchive ? 'page' : undefined} onClick={() => navigate('archive')}>Archive</button></nav><button className="motion-toggle" onClick={() => setMotionPaused(!motionPaused)} aria-pressed={motionPaused} aria-label={motionPaused ? 'Resume ambient motion' : 'Pause ambient motion'}>{motionPaused ? 'PLAY MOTION ▷' : 'PAUSE MOTION Ⅱ'}</button></header>
       <main id="main-content">
         {view === 'studio' ? <StudioScene onNavigate={navigate} message={petLines[petLine % petLines.length]} onPoke={() => setPetLine(petLine + 1)} motionPaused={motionPaused} /> : (
           <div className="workspace-wrap"><div className="workspace-location"><button onClick={() => navigate('studio')}>← BACK TO THE STUDIO</button><span>NEW YORK / PERSONAL INFERENCE LAB</span></div><div className="workspace-sheet">
-            {view === 'find' && <RecipeFinder models={decisionModels} recipe={recipe} onRecipeChange={setRecipe} onInspect={setDossier} onCompare={compareFromResult} />}
+            {view === 'find' && <RecipeFinder models={decisionModels} recipe={recipe} onRecipeChange={setRecipe} onInspect={setDossier} onCompare={compareFromResult} motionPaused={motionPaused} />}
             {view === 'compare' && <ComparisonDesk models={decisionModels} selectedIds={comparisonIds} onToggle={toggleComparison} onAdd={addComparison} onClear={() => setComparisonIds([])} onInspect={setDossier} />}
             {isArchive && <>
               <div className="workspace-heading"><div><p className="eyebrow">03 / THE FILING CABINET</p><h1>Every model.<br /><em>Every receipt.</em></h1></div><p className="heading-aside">{decisionModels.length} dossiers. Five families.<br />The old files stay.<br /><span>Original company & stock snapshot: {checkedAt}.</span></p></div>

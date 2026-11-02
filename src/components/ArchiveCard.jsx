@@ -33,7 +33,7 @@ export default function ArchiveCard({ item, selected, selectionFull, onToggle, o
         <div><dt>Capabilities</dt><dd>Image generation: no. Search tools: {item.capabilities.search ? 'recorded' : 'unrecorded'}.</dd></div>
       </dl></details>
       <details className="company-details"><summary>Company & stock details</summary><CompanyDetails company={companies[item.family]} /></details>
-      <div className="card-bottom"><button className="dossier-open" onClick={() => onInspect(item)}>Open dossier ↗</button>
+      <div className="card-bottom"><p className="file-check-stamp">LAST CHECKED <time dateTime={item.recordCheckedAt}>{item.recordCheckedAt}</time></p><button className="dossier-open" onClick={() => onInspect(item)}>Open dossier ↗</button>
         <p className="source-links"><a href={item.releaseSource} target="_blank" rel="noreferrer">Release source</a><a href={item.priceSource} target="_blank" rel="noreferrer">Price source</a></p>
         <label className="compare-choice"><input type="checkbox" checked={selected} disabled={!selected && selectionFull} onChange={onToggle} />Compare {item.name}</label>
       </div>

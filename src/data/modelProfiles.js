@@ -1,4 +1,4 @@
-import archiveData from './archiveData.js';
+import archiveData, { checkedAt } from './archiveData.js';
 
 export const decisionCheckedAt = '2026-11-02';
 export const scoreDisclosure = 'Editorial fit estimates, not benchmarks. Scores describe our reading of the linked model information.';
@@ -52,6 +52,7 @@ function enrich(item) {
   return {
     ...merged, scores, contextTokens, recommendable: Boolean(merged.recommendable),
     status: merged.status || 'Historical reference',
+    recordCheckedAt: merged.recommendable || merged.lifecycleSource ? decisionCheckedAt : checkedAt,
     profileSource: merged.profileSource || merged.releaseSource,
     bestFor: merged.strengths.join(' / '),
     chooseIf: choiceNotes[merged.id] || `You are comparing the historical ${merged.strengths.slice(0, 2).join(' / ').toLowerCase()} release and have checked the linked availability and rate conditions.`,

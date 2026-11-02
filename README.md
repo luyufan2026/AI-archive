@@ -1,6 +1,6 @@
 # AI Archive — Manhattan Night Studio
 
-An interactive AI archive and decision tool for an Interactive Archive assignment. Enter a rainy Manhattan studio, give the resident line creature a recipe, and compare AI models before choosing one. The original metadata archive is preserved inside the filing cabinet.
+An interactive AI archive and decision tool for an Interactive Archive assignment. Enter a graphite studio on gray paper, give the resident line creature a few needs, and watch the same model files rearrange before comparing them. The original metadata archive is preserved inside the filing cabinet.
 
 Live site: https://luyufan2026.github.io/AI-archive/  
 Source repository: https://github.com/luyufan2026/AI-archive
@@ -24,7 +24,7 @@ React JSX is compiled by Vite into `dist/`. No API keys, login, backend, databas
 
 ## Three ways into the studio
 
-- **Find My AI:** click the CRT, then click or drag 2–5 ingredient cards into the mixing tray. Set a monthly API budget and input/output token volume. Scrib carries ingredients, pretends to mix, and serves up to three model recommendations. Once served, changing requirements, budget or volume recalculates the visible shortlist.
+- **Find My AI:** click the CRT, then click or drag 2–5 ingredient cards into the mixing tray. Set a monthly API budget and input/output token volume. The same five eligible dossiers visibly reorder as needs change; FLIP transitions preserve each file’s identity, while blocked files recede with an explanation. Scrib carries paper slips, uses the studio mixing machine, and pulls up to three model recommendations. Once served, changing requirements, budget or volume recalculates the visible shortlist.
 - **Compare Models:** choose or drag up to three dossiers onto the comparison desk. Compare input/output rates, use cases, editorial capability meters, context, strengths, limitations and “choose this model if…” notes. The original technical/company comparison is still available in the disclosure below the desk.
 - **Explore Archive:** search, combine family/type/specialty/price-basis filters, sort by name/date/rates, inspect full dossiers, and open the original Companies & Stocks view. Selected comparison models remain selected while filtering and switching views.
 
@@ -73,6 +73,8 @@ src/
   assets/manhattan-studio.jpg
   components/
     DragSlip.jsx
+    DeskDrawing.jsx
+    LiveModelDesk.jsx
     StudioScene.jsx
     ScribCompanion.jsx
     RecipeFinder.jsx
@@ -92,6 +94,7 @@ src/
   App.jsx
   App.css
   studio.css
+  pencil.css
   main.jsx
 test/
   archive.test.js
@@ -103,7 +106,7 @@ scripts/
 .github/workflows/deploy.yaml
 ```
 
-Only React, JavaScript, CSS, inline SVG and native pointer events are used. Scrib is an original seeded SVG line drawing; lightweight CSS animates breathing, carrying, mixing and ticket delivery. The room is a single compressed, AI-generated illustrative image with HTML hotspots and a small CSS rain layer. The skyline is a fictional Manhattan-inspired scene, not a live camera, weather feed or 3D simulation.
+Only React, JavaScript, CSS, inline SVG and native pointer events are used. Scrib is an original seeded SVG line drawing; lightweight CSS animates breathing, carrying, mixing and ticket delivery. The room is an editable SVG pencil study: offset contours, hatching, a few rain marks, a CRT, two comparison files and a drawer. Gray paper and a single red accent replace the earlier photoreal backdrop, which is no longer imported or loaded. The skyline is a fictional Manhattan sketch, not a live camera, weather feed or 3D simulation. Hover and keyboard focus lift and mark the objects; Scrib doodles or rummages after idle time. Motion pause and reduced-motion preferences also disable the FLIP reordering transition.
 
 ## GitHub Pages / class build requirements
 
@@ -113,7 +116,7 @@ The existing **Publish Site to GitHub Pages** workflow in `.github/workflows/dep
 
 ## Process and assistance
 
-OpenAI Codex assisted with **brainstorming, React component prototyping, interaction logic and debugging**. The project's concept, requirements, reference direction and design decisions were developed through the student's iterative process. The studio backdrop was created with AI image generation; the companion and interface are implemented as editable project code. This is an interactive prototype, with clearly labeled curated data and estimates, rather than a live AI service or market terminal.
+OpenAI Codex assisted with **brainstorming, React component prototyping, interaction logic and debugging**. The project's concept, requirements, reference direction and design decisions were developed through the student's iterative process. The current pencil studio, companion and interface are implemented as editable project code. The earlier generated photo backdrop remains an unused historical asset; the current site does not load it. This is an interactive prototype, with clearly labeled curated data and estimates, rather than a live AI service or market terminal.
 
 ## Readable HTML / access without JavaScript
 
@@ -122,3 +125,9 @@ The root URL now ships a complete, visible HTML fallback containing the site exp
 `scripts/readableArchive.js` generates this content directly from the existing archive, enriched profiles and recommendation engine, including a computed worked example. `scripts/readableArchivePlugin.js` inserts it into the initial HTML and emits the standalone page during every Vite build; it also serves the readable page in development. No duplicate model dataset, backend, new dependency or user-agent-specific content is introduced. Both humans and automated readers receive the same HTML.
 
 The studio and workspace footer link to the readable edition. This improves access for text-only web readers; it cannot guarantee access from every AI product, cache, search index or network environment. `test/readableArchive.test.js` checks complete records, real fragment destinations, price notes, HTML escaping and the built-in generation hooks.
+
+## Visible rearrangement
+
+`rankModelsForDesk` evaluates the five verified references through the same cost, scoring and capability rules used by the final shortlist. A single need permits a labeled preview; two to five are required to pull the final files. Live files keep stable model IDs and show rank changes, reference-check dates, fit, estimated cost and any blocking reason. Historical models remain in the full archive rather than being presented as purchasable recommendations.
+
+`LiveModelDesk.jsx` measures each file relative to its list, then animates its previous and next positions using the native Web Animations API. Scrolling the page does not become part of a card’s movement. No animation library is added. Paused motion and `prefers-reduced-motion` keep immediate, unanimated updates. Every archive card includes a separate last-checked stamp; each price keeps its own historical/snapshot date.

@@ -1,24 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ScribCompanion from './ScribCompanion.jsx';
-import studioImage from '../assets/manhattan-studio.jpg';
+import DeskDrawing, { ComputerDrawing, CompareDrawing, DrawerDrawing } from './DeskDrawing.jsx';
 
+const objectNotes = { find: 'Change the needs. I’ll move the files.', compare: 'Two files. One difficult decision.', archive: 'All 23. Yes, I kept the old ones.' };
 export default function StudioScene({ onNavigate, message, onPoke, motionPaused }) {
-  return (
-    <section className={`studio-scene ${motionPaused ? 'motion-paused' : ''}`} aria-label="Manhattan Night Studio">
-      <div className="scene-world">
-        <img className="room-image" src={studioImage} alt="A warm, lived-in computer studio with a walnut desk and a rain-covered window overlooking the Manhattan skyline at night" fetchPriority="high" />
-        <div className="window-rain" aria-hidden="true">{Array.from({ length: 16 }, (_, i) => <i key={i} style={{ '--rain-x': `${17 + i * 4.3}%`, '--rain-delay': `${-i * .59}s`, '--rain-speed': `${2 + i % 4}s` }} />)}</div>
-        <button className="monitor-hotspot" onClick={() => onNavigate('find')} aria-label="Use the computer: Find My AI">
-          <span className="monitor-top">AI ARCHIVE / PERSONAL TERMINAL</span><strong>FIND<br />MY AI<span className="cursor-block">_</span></strong><span className="monitor-bottom">[ CLICK TO BOOT ]</span>
-        </button>
-        <button className="desk-object compare-object" onClick={() => onNavigate('compare')}><span>02 / THE WEIGH-IN</span><strong>COMPARE<br />MODELS</strong><i>Lay them on the table ↗</i></button>
-        <button className="desk-object archive-object" onClick={() => onNavigate('archive')}><span>03 / THE FILING CABINET</span><strong>EXPLORE<br />ARCHIVE</strong><i>Every model. Every receipt. ↗</i></button>
-        <div className="scene-pet"><ScribCompanion message={message} onPoke={onPoke} variant="room" /></div>
-      </div>
-      <div className="scene-shade" aria-hidden="true" />
-      <div className="scene-introduction"><p className="eyebrow">A MANHATTAN NIGHT STUDIO</p><h1>Make up<br />your mind.</h1><p>A desk full of models.<br />A small creature with strong opinions.</p></div>
-      <div className="scene-caption"><span><i /> NEW YORK / AFTER HOURS</span><span>Click an object. Follow your curiosity.</span><a href="./archive.html">Text archive ↗</a><button onClick={() => onNavigate('find')}>Start with a recipe ↗</button></div>
-      <div className="mobile-scene-actions"><button onClick={() => onNavigate('find')}>01 Find my AI ↗</button><button onClick={() => onNavigate('compare')}>02 Compare models ↗</button><button onClick={() => onNavigate('archive')}>03 Explore archive ↗</button></div>
-    </section>
-  );
+  const [hovered, setHovered] = useState('');
+  const [idleAction, setIdleAction] = useState('idle');
+  useEffect(() => {
+    if (motionPaused) return;
+    const timer = setInterval(() => setIdleAction((current) => current === 'doodling' ? 'rummaging' : 'doodling'), 14000);
+    return () => clearInterval(timer);
+  }, [motionPaused]);
+  function objectEvents(view) { return { onMouseEnter: () => setHovered(view), onMouseLeave: () => setHovered(''), onFocus: () => setHovered(view), onBlur: () => setHovered(''), onClick: () => onNavigate(view) }; }
+  const idleNote = idleAction === 'doodling' ? 'I made a note. You’re still thinking.' : idleAction === 'rummaging' ? 'Just checking the drawer. Again.' : message;
+  return <section className="studio-scene pencil-scene" aria-label="Manhattan pencil studio">
+    <div className={`paper-stage looking-at-${hovered || 'nothing'}`}>
+      <DeskDrawing />
+      <div className="desk-introduction"><p className="eyebrow">AN ARCHIVE IN USE / NEW YORK</p><h1>A working<br />archive.</h1><p>Same models. Different needs.<br />Watch the order change.</p></div>
+      <span className="window-caption">Manhattan, after hours.</span>
+      <span className="pencil-annotation start-annotation">start here.</span>
+      <button className="pencil-object desk-computer" {...objectEvents('find')} aria-label="Find my AI: start at the computer"><ComputerDrawing /><span className="computer-label"><small>01 / ARRANGE THE MODELS</small><strong>Find<br />my AI<span className="typed-cursor">_</span></strong><span className="computer-enter">[ CLICK OR PRESS ENTER ↗ ]</span></span></button>
+      <button className="pencil-object desk-compare" {...objectEvents('compare')} aria-label="Compare models: two files under the lamp"><CompareDrawing /><span className="compare-paper-label"><small>02 / SIDE BY SIDE</small><strong>Compare<br />models ↗</strong></span></button>
+      <button className="pencil-object desk-archive" {...objectEvents('archive')} aria-label="Explore archive: open all 23 records"><DrawerDrawing /><span className="drawer-label"><small>03 / THE OLD FILES TOO</small><strong>Explore<br />archive ↗</strong><i>23 records</i></span></button>
+      <div className={`paper-pet pet-${idleAction}`}><ScribCompanion mood={hovered || motionPaused ? 'idle' : idleAction} message={objectNotes[hovered] || idleNote} onPoke={() => { setIdleAction('idle'); onPoke(); }} variant="room" /><svg className="scrib-doodle" viewBox="0 0 120 60" aria-hidden="true"><path d="M7 36q20-48 25-1t25 2t21-3t25 3 M10 44l96 -3 M17 53l68 -5" /></svg></div>
+      <span className="pencil-annotation desk-margin-note">a change of mind<br />is a change of order.</span>
+    </div>
+    <footer className="paper-scene-footer"><p><span className="small-red-mark">↳</span> The computer arranges. The lamp compares. The drawer keeps everything.</p><a href="./archive.html">Read the text archive ↗</a></footer>
+  </section>;
 }

@@ -52,7 +52,7 @@ function modelRecord(model) {
     <h3>${e(model.name)}</h3>
     ${facts([
       ['Company', company.name], ['Released / date reference', `${model.releaseDate} · ${model.releaseKind}`],
-      ['Model type', model.type], ['Best for / specialties', model.bestFor],
+      ['Model type', model.type], ['Record last checked', model.recordCheckedAt], ['Best for / specialties', model.bestFor],
       ['Reference input price', `${formatPrice(model.inputPrice)} USD / 1M text tokens (uncached input)`],
       ['Reference output price', `${formatPrice(model.outputPrice)} USD / 1M text tokens`],
       ['Price basis / date', `${model.priceBasis} · ${model.priceDate}`], ['Price conditions', model.priceNote],
@@ -91,7 +91,7 @@ export function renderArchiveContent({ fallback = false } = {}) {
       <nav aria-label="Readable archive sections"><a href="#experience">How the site works</a><a href="#method">Recommendation rules</a><a href="#models">All ${decisionModels.length} models</a><a href="#companies">Companies &amp; stocks</a>${fallback ? '<a href="./archive.html">Permanent readable edition</a>' : '<a href="./">Enter the studio</a>'}</nav>
     </header>
     <section id="experience"><h2>How the site works</h2><ul>
-      <li><strong>Find My AI:</strong> select or drag 2–5 requirement ingredients, set an API usage budget, then choose BUILD MY AI. Scrib mixes and serves up to three deterministic recommendations.</li>
+      <li><strong>Find My AI:</strong> select or drag 2–5 requirement ingredients, set an API usage budget, then choose BUILD MY AI. The same five eligible model cards visibly rearrange as requirements change; blocked models stay visible with a reason. Scrib uses the studio mixing machine to pull up to three deterministic recommendations.</li>
       <li><strong>Compare Models:</strong> place up to three dossiers on a comparison desk to compare rates, use cases, capability notes, context, strengths and limitations.</li>
       <li><strong>Explore Archive:</strong> search and combine family, model type, specialty and price-basis filters. Sort by name, release date or input/output price, and read original source links.</li>
     </ul><p>Scrib is an abstract humanoid drawn from tangled SVG lines. Carrying, mixing and ticket delivery provide visual feedback. The companion does not call an AI service or generate responses. React state stores the current choices in the browser session; refresh resets them. No account, API key, backend or database is required.</p></section>
@@ -113,7 +113,7 @@ export function renderArchiveContent({ fallback = false } = {}) {
       ${decisionModels.map(modelRecord).join('\n')}
     </section>
     <section id="companies"><h2>Companies &amp; stock snapshots</h2><p>Company information and saved parent-company quotes are from ${checkedAt}. They are not live market prices or investment recommendations. Private companies have no invented public quote. Parent-company stocks are identified separately from AI products.</p>${Object.entries(companies).map(companyRecord).join('\n')}</section>
-    <footer><p>AI Archive / Interactive Archive assignment. OpenAI Codex assisted with brainstorming, React component prototyping, interaction logic and debugging. The studio backdrop is AI-generated; the companion is editable SVG code.</p><p><a href="./">Interactive studio</a> · <a href="./archive.html">Readable archive</a> · ${link('https://github.com/luyufan2026/AI-archive', 'Source repository')}</p></footer>
+    <footer><p>AI Archive / Interactive Archive assignment. OpenAI Codex assisted with brainstorming, React component prototyping, interaction logic and debugging. The pencil studio and companion are editable SVG drawings; no generated backdrop is loaded.</p><p><a href="./">Interactive studio</a> · <a href="./archive.html">Readable archive</a> · ${link('https://github.com/luyufan2026/AI-archive', 'Source repository')}</p></footer>
   </main>`;
 }
 

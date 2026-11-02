@@ -48,10 +48,10 @@ export default function ScribCompanion({ mood = 'idle', message = 'Still decidin
         <svg viewBox="0 0 195 240" role="img" aria-label="An abstract little person made of restless black ink lines">
           <defs><filter id={`ink-glow-${variant || 'main'}`} x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="0" stdDeviation="1.1" floodColor="#e3cda1" floodOpacity=".85" /></filter></defs>
           <ellipse cx="98" cy="228" rx="41" ry="5" fill="#000" opacity=".35" />
-          <g className="scrib-figure" fill="none" stroke="#10120f" strokeWidth=".8" strokeLinejoin="round" filter={`url(#ink-glow-${variant || 'main'})`}>
+          <g className="scrib-figure" fill="none" stroke="#10120f" strokeWidth=".8" strokeLinejoin="round">
             <g className="scrib-left-leg"><Lines paths={leftLeg} /></g><g className="scrib-right-leg"><Lines paths={rightLeg} /></g>
             <Lines paths={torso} /><g className="scrib-arms"><Lines paths={arms} /></g>
-            <g style={{ transform: `rotate(${look}deg)`, transformOrigin: '94px 65px' }}><Lines paths={head} /><path d="M82 43l8 -1 M100 42l8 1" stroke="#e7ddb9" strokeWidth="2.5" /></g>
+            <g style={{ transform: `rotate(${look}deg)`, transformOrigin: '94px 65px' }}><Lines paths={head} /><path d="M82 43l8 -1 M100 42l8 1" stroke="#6a625b" strokeWidth="1.5" /></g>
           </g>
         </svg>
         {cargo && <span className="scrib-cargo" key={cargo}>{cargo}</span>}

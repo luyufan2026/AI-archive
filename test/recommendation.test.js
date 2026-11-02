@@ -69,3 +69,29 @@ test('search combines with filters and includes the additional dossiers', () => 
   assert.equal(filterAndSort(decisionModels, { query: 'GEMINI', family: 'Claude' }).length, 0);
   assert.ok(filterAndSort(decisionModels, { query: 'agents' }).every((item) => item.strengths.includes('Agents')));
 });
+
+test('live arrangement preserves the same files, previews a single need and shares final ranking', async () => {
+  const { rankModelsForDesk } = await import('../src/utils/recommendation.js');
+  const untouched = rankModelsForDesk(decisionModels, [], 20);
+  assert.deepEqual(untouched.map((item) => item.model.id), [2, 16, 21, 22, 23]);
+  assert.ok(untouched.every((item) => item.fit === null));
+  const writing = rankModelsForDesk(decisionModels, ['writing'], 20);
+  assert.equal(writing[0].model.id, 21);
+  const codingCheap = rankModelsForDesk(decisionModels, ['coding', 'cheap'], 20);
+  assert.deepEqual(codingCheap.slice(0, 3), recommendModels(decisionModels, ['coding', 'cheap'], 20).items);
+  assert.deepEqual(new Set(codingCheap.map((item) => item.model.id)), new Set(untouched.map((item) => item.model.id)));
+  assert.notDeepEqual(codingCheap.map((item) => item.model.id), writing.map((item) => item.model.id));
+});
+
+test('live desk keeps blocked models visible and labels the real constraint', async () => {
+  const { rankModelsForDesk } = await import('../src/utils/recommendation.js');
+  const search = rankModelsForDesk(decisionModels, ['search', 'research'], 20);
+  assert.equal(search.length, 5);
+  assert.deepEqual(search.filter((item) => item.eligible).map((item) => item.model.id), [23, 16]);
+  assert.ok(search.filter((item) => !item.eligible).every((item) => item.blockedReason === 'Search support unrecorded'));
+  const noBudget = rankModelsForDesk(decisionModels, ['coding', 'cheap'], 0);
+  assert.equal(noBudget.length, 5);
+  assert.ok(noBudget.every((item) => !item.eligible && item.blockedReason === 'Above your API budget'));
+  assert.ok(rankModelsForDesk(decisionModels, ['image', 'creative'], 20).every((item) => !item.eligible && item.blockedReason === 'No image generation'));
+  assert.ok(decisionModels.every((model) => /^2026-\d{2}-\d{2}$/.test(model.recordCheckedAt)));
+});
