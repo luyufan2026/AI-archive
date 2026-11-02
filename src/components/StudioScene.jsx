@@ -17,7 +17,7 @@ export default function StudioScene({ onNavigate, message, onPoke, motionPaused 
       </div>
       <div className="scene-shade" aria-hidden="true" />
       <div className="scene-introduction"><p className="eyebrow">A MANHATTAN NIGHT STUDIO</p><h1>Make up<br />your mind.</h1><p>A desk full of models.<br />A small creature with strong opinions.</p></div>
-      <div className="scene-caption"><span><i /> NEW YORK / AFTER HOURS</span><span>Click an object. Follow your curiosity.</span><button onClick={() => onNavigate('find')}>Start with a recipe ↗</button></div>
+      <div className="scene-caption"><span><i /> NEW YORK / AFTER HOURS</span><span>Click an object. Follow your curiosity.</span><a href="./archive.html">Text archive ↗</a><button onClick={() => onNavigate('find')}>Start with a recipe ↗</button></div>
       <div className="mobile-scene-actions"><button onClick={() => onNavigate('find')}>01 Find my AI ↗</button><button onClick={() => onNavigate('compare')}>02 Compare models ↗</button><button onClick={() => onNavigate('archive')}>03 Explore archive ↗</button></div>
     </section>
   );

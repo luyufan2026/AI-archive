@@ -96,6 +96,10 @@ src/
 test/
   archive.test.js
   recommendation.test.js
+  readableArchive.test.js
+scripts/
+  readableArchive.js
+  readableArchivePlugin.js
 .github/workflows/deploy.yaml
 ```
 
@@ -110,3 +114,11 @@ The existing **Publish Site to GitHub Pages** workflow in `.github/workflows/dep
 ## Process and assistance
 
 OpenAI Codex assisted with **brainstorming, React component prototyping, interaction logic and debugging**. The project's concept, requirements, reference direction and design decisions were developed through the student's iterative process. The studio backdrop was created with AI image generation; the companion and interface are implemented as editable project code. This is an interactive prototype, with clearly labeled curated data and estimates, rather than a live AI service or market terminal.
+
+## Readable HTML / access without JavaScript
+
+The root URL now ships a complete, visible HTML fallback containing the site explanation, scoring rules, all 23 dossiers, sources and company/stock snapshots. React replaces that fallback with the immersive studio once JavaScript runs. The same readable content is also published at **https://luyufan2026.github.io/AI-archive/archive.html**. It has ordinary links and headings and requires no scripts to read.
+
+`scripts/readableArchive.js` generates this content directly from the existing archive, enriched profiles and recommendation engine, including a computed worked example. `scripts/readableArchivePlugin.js` inserts it into the initial HTML and emits the standalone page during every Vite build; it also serves the readable page in development. No duplicate model dataset, backend, new dependency or user-agent-specific content is introduced. Both humans and automated readers receive the same HTML.
+
+The studio and workspace footer link to the readable edition. This improves access for text-only web readers; it cannot guarantee access from every AI product, cache, search index or network environment. `test/readableArchive.test.js` checks complete records, real fragment destinations, price notes, HTML escaping and the built-in generation hooks.
