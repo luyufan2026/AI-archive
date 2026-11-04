@@ -28,7 +28,7 @@ React JSX is compiled by Vite into `dist/`. No API keys, login, backend, databas
 - **Compare Models:** choose or drag up to three dossiers onto the comparison desk. Compare input/output rates, use cases, editorial capability meters, context, strengths, limitations and “choose this model if…” notes. The original technical/company comparison is still available in the disclosure below the desk.
 - **Explore Archive:** search, combine family/type/specialty/price-basis filters, sort by name/date/rates, inspect full dossiers, and open the original Companies & Stocks view. Selected comparison models remain selected while filtering and switching views.
 
-Every drag interaction has a click alternative. Buttons support keyboard use; the native model dialog supports Escape, focus containment and a close button. A pause control stops ambient animation, and the interface respects `prefers-reduced-motion`. Mobile layouts simplify the scene and stack the workbench. In-session React state is reset on a page refresh; this prototype has no persistent account storage.
+Every drag interaction has a click alternative. Buttons support keyboard use; the native model dialog supports Escape, focus containment and a close button. The interface automatically respects the system’s `prefers-reduced-motion` preference; there is no separate animation toggle on the page. Mobile layouts simplify the scene and stack the workbench. In-session React state is reset on a page refresh; this prototype has no persistent account storage.
 
 ## Records, prices and availability
 
@@ -66,7 +66,7 @@ Tests cover preservation of original records, filters/sorts/search, real cost cu
 
 ## Components and state
 
-React `useState` manages the active room, archive filters/search/sort, comparison selection, recipe ingredients/budget/volume, companion activity, animation pause and model dialog. `useEffect` handles the finite cooking sequence, pointer-following, dialog lifecycle and cleanup.
+React `useState` manages the active room, archive filters/search/sort, comparison selection, recipe ingredients/budget/volume, companion activity, page visibility and model dialog. `useEffect` handles the finite cooking sequence, pointer-following, dialog lifecycle and cleanup.
 
 ```text
 src/
@@ -108,7 +108,7 @@ scripts/
 .github/workflows/deploy.yaml
 ```
 
-Only React, JavaScript, CSS, inline SVG and native pointer events are used. Scrib is an original seeded SVG line drawing; lightweight CSS animates breathing, carrying, mixing and ticket delivery. The room is an editable SVG pencil study: offset contours, hatching, a few rain marks, a CRT, two comparison files and a drawer. Gray paper and a single red accent replace the earlier photoreal backdrop, which is no longer imported or loaded. The skyline is a fictional Manhattan sketch, not a live camera, weather feed or 3D simulation. Hover and keyboard focus lift and mark the objects; Scrib doodles or rummages after idle time. Motion pause and reduced-motion preferences also disable the FLIP reordering transition.
+Only React, JavaScript, CSS, inline SVG and native pointer events are used. Scrib is an original seeded SVG line drawing; lightweight CSS animates breathing, carrying, mixing and ticket delivery. The room is an editable SVG pencil study: offset contours, hatching, a few rain marks, a CRT, two comparison files and a drawer. Gray paper and a single red accent replace the earlier photoreal backdrop, which is no longer imported or loaded. The skyline is a fictional Manhattan sketch, not a live camera, weather feed or 3D simulation. Hover and keyboard focus lift and mark the objects; Scrib doodles or rummages after idle time. System reduced-motion preferences also disable the FLIP reordering transition.
 
 ## GitHub Pages / class build requirements
 
@@ -132,7 +132,7 @@ The studio and workspace footer link to the readable edition. This improves acce
 
 `rankModelsForDesk` evaluates the five verified references through the same cost, scoring and capability rules used by the final shortlist. A single need permits a labeled preview; two to five are required to pull the final files. Live files keep stable model IDs and show rank changes, reference-check dates, fit, estimated cost and any blocking reason. Historical models remain in the full archive rather than being presented as purchasable recommendations.
 
-`LiveModelDesk.jsx` measures each file relative to its list, then animates its previous and next positions using the native Web Animations API. Scrolling the page does not become part of a card’s movement. No animation library is added. Paused motion and `prefers-reduced-motion` keep immediate, unanimated updates. Every archive card includes a separate last-checked stamp; each price keeps its own historical/snapshot date.
+`LiveModelDesk.jsx` measures each file relative to its list, then animates its previous and next positions using the native Web Animations API. Scrolling the page does not become part of a card’s movement. No animation library is added. `prefers-reduced-motion` keeps immediate, unanimated updates. Every archive card includes a separate last-checked stamp; each price keeps its own historical/snapshot date.
 
 ## Interaction performance
 
@@ -144,4 +144,4 @@ The paper grain is a small static SVG tile, without a fullscreen turbulence filt
 
 The kitchen now shows six concrete needs: Coding, Writing, Research, Search, Long context and Cheap. Extra slogans, repeated section labels and the duplicate final result grid were removed. Original model records and scoring rules are preserved.
 
-Selecting a need sends a paper slip into a visible pot. Cook my AI runs a finite 3.9-second sequence: load ingredients, stir with Scrib, then plate the matches. A skip action serves immediately. Paused or reduced motion also serves immediately. Ingredient and budget controls lock during cooking; changing the recipe afterwards clears the served result, while the live candidate list continues to rank using the same rules. The existing five cards become the final shortlist, with the selected matches marked and the others muted. This is a visual representation of deterministic local scoring, not a network request or a claim that AI answers are being generated. Animation uses a small stage and transforms, without background effects or per-frame React updates.
+Selecting a need sends a paper slip into a visible pot. Cook my AI runs a finite 3.9-second sequence: load ingredients, stir with Scrib, then plate the matches. A skip action serves immediately. System reduced motion also serves immediately; a hidden page finishes the pending sequence without running background animation. Ingredient and budget controls lock during cooking; changing the recipe afterwards clears the served result, while the live candidate list continues to rank using the same rules. The existing five cards become the final shortlist, with the selected matches marked and the others muted. This is a visual representation of deterministic local scoring, not a network request or a claim that AI answers are being generated. Animation uses a small stage and transforms, without background effects or per-frame React updates.

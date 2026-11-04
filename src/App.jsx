@@ -27,9 +27,7 @@ export default function App() {
   const [dossier, setDossier] = useState(null);
   const [recipe, setRecipe] = useState({ selected: [], budget: 20, usage: { ...defaultUsage } });
   const [petLine, setPetLine] = useState(0);
-  const [motionPaused, setMotionPaused] = useState(false);
   const [pageHidden, setPageHidden] = useState(document.hidden);
-  const effectsPaused = motionPaused || pageHidden;
   useEffect(() => {
     const update = () => setPageHidden(document.hidden);
     document.addEventListener('visibilitychange', update);
@@ -50,14 +48,14 @@ export default function App() {
   function resetFilters() { setFamily('all'); setType('all'); setSpecialty('all'); setPriceBasis('all'); setSortMode('default'); setQuery(''); }
   const isArchive = view === 'archive' || view === 'companies';
   return (
-    <div className={`studio-app ${view === 'studio' ? 'is-room' : 'is-workspace'} ${effectsPaused ? 'motion-paused' : ''}`}>
+    <div className={`studio-app ${view === 'studio' ? 'is-room' : 'is-workspace'} ${pageHidden ? 'motion-paused' : ''}`}>
       <DragSlip drag={archiveDrag} elementRef={archiveGhostRef} />
       <a className="skip-link" href="#main-content">Skip to content</a>
-      <header className="studio-header"><button className="wordmark" onClick={() => navigate('studio')} aria-label="AI Archive: back to studio">AI<span className="wordmark-symbol">/</span>ARCHIVE</button><nav aria-label="Main navigation"><button aria-current={view === 'find' ? 'page' : undefined} onClick={() => navigate('find')}>Cook my AI</button><button aria-current={view === 'compare' ? 'page' : undefined} onClick={() => navigate('compare')}>Compare <span>{comparisonIds.length ? `(${comparisonIds.length})` : ''}</span></button><button aria-current={isArchive ? 'page' : undefined} onClick={() => navigate('archive')}>Archive</button></nav><button className="motion-toggle" onClick={() => setMotionPaused(!motionPaused)} aria-pressed={motionPaused} aria-label={motionPaused ? 'Resume ambient motion' : 'Pause ambient motion'}>{motionPaused ? 'PLAY MOTION ▷' : 'PAUSE MOTION Ⅱ'}</button></header>
+      <header className="studio-header"><button className="wordmark" onClick={() => navigate('studio')} aria-label="AI Archive: back to studio">AI<span className="wordmark-symbol">/</span>ARCHIVE</button><nav aria-label="Main navigation"><button aria-current={view === 'find' ? 'page' : undefined} onClick={() => navigate('find')}>Cook my AI</button><button aria-current={view === 'compare' ? 'page' : undefined} onClick={() => navigate('compare')}>Compare <span>{comparisonIds.length ? `(${comparisonIds.length})` : ''}</span></button><button aria-current={isArchive ? 'page' : undefined} onClick={() => navigate('archive')}>Archive</button></nav></header>
       <main id="main-content">
-        {view === 'studio' ? <StudioScene onNavigate={navigate} message={petLines[petLine % petLines.length]} onPoke={() => setPetLine(petLine + 1)} motionPaused={effectsPaused} /> : (
+        {view === 'studio' ? <StudioScene onNavigate={navigate} message={petLines[petLine % petLines.length]} onPoke={() => setPetLine(petLine + 1)} motionPaused={pageHidden} /> : (
           <div className="workspace-wrap"><div className="workspace-location"><button onClick={() => navigate('studio')}>← BACK TO THE STUDIO</button></div><div className="workspace-sheet">
-            {view === 'find' && <RecipeFinder models={decisionModels} recipe={recipe} onRecipeChange={setRecipe} onInspect={setDossier} onCompare={compareFromResult} motionPaused={effectsPaused} />}
+            {view === 'find' && <RecipeFinder models={decisionModels} recipe={recipe} onRecipeChange={setRecipe} onInspect={setDossier} onCompare={compareFromResult} motionPaused={pageHidden} />}
             {view === 'compare' && <ComparisonDesk models={decisionModels} selectedIds={comparisonIds} onToggle={toggleComparison} onAdd={addComparison} onClear={() => setComparisonIds([])} onInspect={setDossier} />}
             {isArchive && <>
               <div className="workspace-heading"><h1>Model archive.</h1><p className="heading-aside">{decisionModels.length} models · 5 families</p></div>
