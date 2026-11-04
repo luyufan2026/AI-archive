@@ -24,12 +24,13 @@ const torso = loops(96, 105, 21, 34, 19);
 const arms = [...limbs([[80, 78], [63, 103], [62, 130], [37, 155], [22, 157]]), ...limbs([[111, 80], [125, 103], [131, 128], [151, 144], [173, 141]])];
 const leftLeg = limbs([[85, 130], [77, 159], [69, 184], [73, 215], [57, 222]], 15);
 const rightLeg = limbs([[104, 130], [115, 160], [124, 184], [116, 214], [132, 222]], 15);
-const ScribFigure = memo(function ScribFigure({ headRef }) {
+const chefArms = [...limbs([[80, 78], [67, 103], [60, 135], [43, 148]]), ...limbs([[111, 80], [147, 68], [183, 51], [221, 55], [250, 60]])];
+const ScribFigure = memo(function ScribFigure({ headRef, chef }) {
   return <svg viewBox="0 0 195 240" role="img" aria-label="An abstract little person made of restless black ink lines">
     <ellipse cx="98" cy="228" rx="41" ry="5" fill="#000" opacity=".35" />
     <g className="scrib-figure" fill="none" stroke="#10120f" strokeWidth=".8" strokeLinejoin="round">
       <g className="scrib-left-leg"><path d={leftLeg.join(' ')} /></g><g className="scrib-right-leg"><path d={rightLeg.join(' ')} /></g>
-      <path d={torso.join(' ')} /><g className="scrib-arms"><path d={arms.join(' ')} /></g>
+      <path d={torso.join(' ')} /><g className="scrib-arms"><path d={(chef ? chefArms : arms).join(' ')} /></g>
       <g ref={headRef}><path d={head.join(' ')} /><path d="M82 43l8 -1 M100 42l8 1" stroke="#6a625b" strokeWidth="1.5" /></g>
     </g>
   </svg>;
@@ -40,9 +41,9 @@ export default function ScribCompanion({ mood = 'idle', message = 'Still decidin
   useScribLook(root, headRef, motionPaused);
   return (
     <div ref={root} className={`scrib-companion scrib-${mood} ${variant}`}>
-      <div className="scrib-speech" role="status"><span>SCRIB / RESIDENT CRITIC</span><p>{message}</p></div>
+      {message && <div className="scrib-speech" role="status"><p>{message}</p></div>}
       <button className="scrib-body" type="button" onClick={onPoke} aria-label="Talk to Scrib, your studio companion">
-        <ScribFigure headRef={headRef} />
+        <ScribFigure headRef={headRef} chef={variant === 'chef'} />
         {cargo && <span className="scrib-cargo" key={cargo}>{cargo}</span>}
       </button>
       <span className="scrib-name">Scrib. <i>He has opinions.</i></span>

@@ -1,6 +1,6 @@
 import { checkedAt, companies } from '../src/data/archiveData.js';
 import { decisionModels, recommendedPool, decisionCheckedAt, formatContext, scoreDisclosure } from '../src/data/modelProfiles.js';
-import { ingredients, defaultUsage, recommendModels } from '../src/utils/recommendation.js';
+import { kitchenIngredients, defaultUsage, recommendModels } from '../src/utils/recommendation.js';
 import { formatPrice } from '../src/utils/archive.js';
 
 export function escapeHTML(value) {
@@ -91,19 +91,19 @@ export function renderArchiveContent({ fallback = false } = {}) {
       <nav aria-label="Readable archive sections"><a href="#experience">How the site works</a><a href="#method">Recommendation rules</a><a href="#models">All ${decisionModels.length} models</a><a href="#companies">Companies &amp; stocks</a>${fallback ? '<a href="./archive.html">Permanent readable edition</a>' : '<a href="./">Enter the studio</a>'}</nav>
     </header>
     <section id="experience"><h2>How the site works</h2><ul>
-      <li><strong>Find My AI:</strong> select or drag 2–5 requirement ingredients, set an API usage budget, then choose BUILD MY AI. The same five eligible model cards visibly rearrange as requirements change; blocked models stay visible with a reason. Scrib uses the studio mixing machine to pull up to three deterministic recommendations.</li>
+      <li><strong>Cook my AI:</strong> select or drag 2–5 requirement ingredients, set an API usage budget, then choose Cook my AI. The same five eligible model cards visibly rearrange as requirements change; blocked models stay visible with a reason. Six needs are offered in the kitchen: Coding, Writing, Research, Search, Long context and Cheap. Paper ingredients drop into a pot; Scrib stirs them and plates up to three deterministic matches. The same model cards become the served shortlist, without a duplicate results grid.</li>
       <li><strong>Compare Models:</strong> place up to three dossiers on a comparison desk to compare rates, use cases, capability notes, context, strengths and limitations.</li>
       <li><strong>Explore Archive:</strong> search and combine family, model type, specialty and price-basis filters. Sort by name, release date or input/output price, and read original source links.</li>
     </ul><p>Scrib is an abstract humanoid drawn from tangled SVG lines. Carrying, mixing and ticket delivery provide visual feedback. The companion does not call an AI service or generate responses. React state stores the current choices in the browser session; refresh resets them. No account, API key, backend or database is required.</p></section>
     <section id="method"><h2>Recommendation rules &amp; API budget</h2>
       <p>${recommendedPool.length} reference-verified model versions enter the recipe engine: ${e(recommendedPool.map((model) => model.name).join(', '))}. Model references were checked ${decisionCheckedAt}. Historical and retired versions remain in the archive and do not enter recommendations.</p>
-      <p><strong>Requirement ingredients:</strong> ${e(ingredients.map((item) => item.label).join(', '))}.</p>
+      <p><strong>Kitchen ingredients:</strong> ${e(kitchenIngredients.map((item) => item.label).join(', '))}.</p>
       <ol><li>Select 2–5 unique recognized ingredients. Validate a nonnegative monthly budget and a positive total input/output token volume.</li>
       <li>Estimate monthly API cost: <strong>input volume in millions × input rate + output volume in millions × output rate</strong>. Default volume: ${defaultUsage.input}M input and ${defaultUsage.output}M output. These are API usage estimates, not consumer subscription fees.</li>
       <li>Average the selected editorial 0–10 scores with equal weight, multiply by 10, then round to an integer fit score. Cheap uses <code>clamp(10 − 3 × log10(1 + monthly cost), 0, 10)</code>. Long Context uses <code>min(10, context tokens / 100,000)</code>. Powerful averages coding, research and accuracy.</li>
       <li>Search requires recorded search-tool support. Image generation requires image output. This collection has text-output models, so an image-generation recipe returns an explanation rather than a fabricated match.</li>
-      <li>Remove models above the budget. Sort by fit descending, monthly cost ascending, then stable record ID. Return at most three recommendations. Changing requirements, budget or volume after serving recalculates the shortlist.</li></ol>
-      <p>Budget choices: $0, $20, $50 and $100+. The $100+ option uses a $100 comparison ceiling. No free-tier quota, tax, search/tool charge or caching discount is assumed. Zero budget can return no paid-rate matches. Fit scores are editorial heuristics, not measured benchmarks, success probabilities or guarantees.</p>
+      <li>Remove models above the budget. Sort by fit descending, monthly cost ascending, then stable record ID. Return at most three recommendations. Changing requirements, budget or volume clears the served shortlist; live candidate rankings update immediately and the next cook serves the new matches.</li></ol>
+      <p>Budget choices: $0, $20, $50 and $100. The top preset uses a $100 comparison ceiling. No free-tier quota, tax, search/tool charge or caching discount is assumed. Zero budget can return no paid-rate matches. Fit scores are editorial heuristics, not measured benchmarks, success probabilities or guarantees.</p>
       <h3>Worked example: Coding + Cheap</h3><p>Budget $20/month; volume 1M input + 0.25M output. Results calculated with the same engine as the interactive studio:</p>
       <div class="table-wrap"><table><thead><tr><th scope="col">Model</th><th scope="col">Editorial fit</th><th scope="col">Estimated month (USD)</th></tr></thead><tbody>${example.items.map(({ model, fit, cost }) => `<tr><td><a href="#model-${model.id}">${e(model.name)}</a></td><td>${fit}/100</td><td>${e(formatPrice(cost))}</td></tr>`).join('')}</tbody></table></div>
       <p>Each rate keeps its own reference date and conditions below. These snapshots do not automatically update; read the linked rate conditions before paying for API usage.</p>

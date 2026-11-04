@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { rankModelsForDesk } from '../utils/recommendation.js';
 import { formatPrice } from '../utils/archive.js';
 
-export default function LiveModelDesk({ models, recipe, onInspect, onCompare, motionPaused }) {
+export default function LiveModelDesk({ models, recipe, onInspect, onCompare, motionPaused, result }) {
   const ranked = useMemo(() => rankModelsForDesk(models, recipe.selected, recipe.budget, recipe.usage), [models, recipe.selected, recipe.budget, recipe.usage]);
   const nodes = useRef(new Map());
   const previous = useRef(new Map());
@@ -36,13 +36,12 @@ export default function LiveModelDesk({ models, recipe, onInspect, onCompare, mo
   }, [signature, motionPaused]);
   const eligible = ranked.filter((item) => item.eligible).length;
   return <section className="live-model-desk" aria-label="Live model arrangement">
-    <div className="section-label"><span>THE SAME FIVE FILES</span><span>{String(eligible).padStart(2, '0')} WITHIN REACH</span></div>
-    <div className="live-desk-heading"><h2>The order is the answer.</h2><span className="pencil-annotation">needs change → files move</span></div>
-    <p className="live-desk-hint" role="status">{recipe.selected.length ? `${recipe.selected.length < 2 ? 'Preview only — add another need to make a shortlist. ' : ''}${eligible} of ${ranked.length} references meet the budget and capability requirements.` : 'Start with a need. Nothing has been ranked yet.'}</p>
-    <ol className="live-file-stack">{ranked.map(({ model, cost, fit, eligible: fits, blockedReason }, index) => <li key={model.id} ref={(node) => { if (node) nodes.current.set(model.id, node); else nodes.current.delete(model.id); }} className={`live-model-file ${!fits ? 'is-outside' : ''} ${index === 0 && fit !== null && fits ? 'is-under-lamp' : ''}`} data-model-id={model.id} data-rank={index + 1}>
+    <div className="live-desk-heading"><h2>{result ? 'Your matches' : 'Candidates'}</h2><span className="candidate-count">{result ? result.items.length : eligible}/{ranked.length}</span></div>
+    <p className="live-desk-hint" role="status">{result ? 'Served by Scrib.' : recipe.selected.length ? 'The order changes with your ingredients.' : 'Add ingredients to rank these models.'}</p>
+    <ol className={`live-file-stack ${result ? 'files-served' : ''}`}>{ranked.map(({ model, cost, fit, eligible: fits, blockedReason }, index) => <li key={model.id} ref={(node) => { if (node) nodes.current.set(model.id, node); else nodes.current.delete(model.id); }} className={`live-model-file ${!fits ? 'is-outside' : ''} ${index === 0 && fit !== null && fits ? 'is-under-lamp' : ''} ${result?.items.some((item) => item.model.id === model.id) ? 'is-served' : result ? 'not-served' : ''}`} data-model-id={model.id} data-rank={index + 1} style={{ '--serve-index': index }}>
       <span className="live-file-rank">{String(index + 1).padStart(2, '0')}</span><div className="live-file-body"><p>{model.family} <span className={`rank-movement ${moves[model.id] > 0 ? 'moves-up' : ''}`}>{moves[model.id] ? `${moves[model.id] > 0 ? '↑' : '↓'} ${Math.abs(moves[model.id])} ${Math.abs(moves[model.id]) === 1 ? 'place' : 'places'}` : ''}</span></p><h3><button onClick={() => onInspect(model)}>{model.name}</button></h3><span className="file-cost">{formatPrice(cost)} / estimated month</span><p className="live-file-reason">{blockedReason || (fit === null ? model.bestFor : `${ranked[index].reasons.map((reason) => reason.label).slice(0, 2).join(' + ')} fit`)}</p><span className="file-check-stamp">CHECKED {model.recordCheckedAt}</span></div>
       <div className="live-file-score"><strong>{fit ?? '—'}<small>{fit === null ? 'UNRANKED' : '/100 FIT'}</small></strong><button onClick={() => onCompare(model.id)}>Compare +</button></div>
     </li>)}</ol>
-    <p className="source-note">Same records, new arrangement. Scores are editorial estimates. Files outside the requirements stay visible. The full archive keeps all {models.length} dossiers.</p>
+    <p className="source-note">Editorial fit / 100 · estimated API cost / month.</p>
   </section>;
 }

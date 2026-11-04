@@ -24,7 +24,7 @@ React JSX is compiled by Vite into `dist/`. No API keys, login, backend, databas
 
 ## Three ways into the studio
 
-- **Find My AI:** click the CRT, then click or drag 2–5 ingredient cards into the mixing tray. Set a monthly API budget and input/output token volume. The same five eligible dossiers visibly reorder as needs change; FLIP transitions preserve each file’s identity, while blocked files recede with an explanation. Scrib carries paper slips, uses the studio mixing machine, and pulls up to three model recommendations. Once served, changing requirements, budget or volume recalculates the visible shortlist.
+- **Cook my AI:** choose or drag 2–5 of six needs into the pot, set an API budget if needed, and cook. Paper slips drop into the pot, Scrib stirs, and a plate brings the matches out. The same five candidate files visibly reorder as needs change and become the final shortlist. Changing an ingredient, budget or volume clears the served result until the next cook.
 - **Compare Models:** choose or drag up to three dossiers onto the comparison desk. Compare input/output rates, use cases, editorial capability meters, context, strengths, limitations and “choose this model if…” notes. The original technical/company comparison is still available in the disclosure below the desk.
 - **Explore Archive:** search, combine family/type/specialty/price-basis filters, sort by name/date/rates, inspect full dossiers, and open the original Companies & Stocks view. Selected comparison models remain selected while filtering and switching views.
 
@@ -56,7 +56,7 @@ All rules are centralized in `src/utils/recommendation.js`.
 
 1. Validate 2–5 unique recognized ingredients, a nonnegative budget, and positive total monthly token volume.
 2. Consider only reference-verified eligible versions. Search requires recorded search-tool support; image generation requires image output.
-3. Estimate monthly cost: **input volume in millions × input price + output volume in millions × output price**. Default: 1M input and 0.25M output tokens. This estimates API usage, not ChatGPT Plus or another consumer subscription. `$100+` explicitly uses a $100 comparison ceiling. A zero budget does not silently assume a free quota.
+3. Estimate monthly cost: **input volume in millions × input price + output volume in millions × output price**. Default: 1M input and 0.25M output tokens. This estimates API usage, not ChatGPT Plus or another consumer subscription. The top preset uses a $100 comparison ceiling. A zero budget does not silently assume a free quota.
 4. Average the selected 0–10 editorial scores with equal weight, then multiply by ten and round to an integer fit score. `Cheap = clamp(10 − 3 × log10(1 + estimated monthly cost), 0, 10)`; `Long context = min(10, recorded context tokens / 100,000)`; `Powerful` averages coding, research and accuracy.
 5. Remove estimates exceeding the budget. Sort by fit descending, monthly cost ascending, then stable record ID. Return at most three, with the strongest selected contributions and a limitation.
 
@@ -66,7 +66,7 @@ Tests cover preservation of original records, filters/sorts/search, real cost cu
 
 ## Components and state
 
-React `useState` manages the active room, archive filters/search/sort, comparison selection, recipe ingredients/budget/volume, companion activity, animation pause and model dialog. `useEffect` handles the brief mixing timer, pointer-following, dialog lifecycle and cleanup.
+React `useState` manages the active room, archive filters/search/sort, comparison selection, recipe ingredients/budget/volume, companion activity, animation pause and model dialog. `useEffect` handles the finite cooking sequence, pointer-following, dialog lifecycle and cleanup.
 
 ```text
 src/
@@ -78,6 +78,7 @@ src/
     StudioScene.jsx
     ScribCompanion.jsx
     RecipeFinder.jsx
+    KitchenStation.jsx
     ComparisonDesk.jsx
     ModelDossier.jsx
     ArchiveCard.jsx
@@ -95,6 +96,7 @@ src/
   App.css
   studio.css
   pencil.css
+  kitchen.css
   main.jsx
 test/
   archive.test.js
@@ -137,3 +139,9 @@ The studio and workspace footer link to the readable edition. This improves acce
 Dragging updates one floating paper slip with `requestAnimationFrame` and a composited transform. React state changes at drag start/end or when crossing the drop target, rather than on every pointer move. Stable pointer bindings and memoized archive cards let unchanged cards reuse their content; search input uses a deferred query, and offscreen archive cards defer layout and painting through `content-visibility`. The five live arrangement files remain fully measured for FLIP; their layout reads happen before animation writes.
 
 The paper grain is a small static SVG tile, without a fullscreen turbulence filter or blend overlay. Rain marks remain static. Scrib retains the same line geometry in six compound SVG paths, with throttled, ref-based head tracking and motion paused while the page is hidden. These changes reduce repeated rendering and painting without changing archive data, scoring or the click/keyboard alternatives to dragging.
+
+## Cooking interaction and concise UI
+
+The kitchen now shows six concrete needs: Coding, Writing, Research, Search, Long context and Cheap. Extra slogans, repeated section labels and the duplicate final result grid were removed. Original model records and scoring rules are preserved.
+
+Selecting a need sends a paper slip into a visible pot. Cook my AI runs a finite 3.9-second sequence: load ingredients, stir with Scrib, then plate the matches. A skip action serves immediately. Paused or reduced motion also serves immediately. Ingredient and budget controls lock during cooking; changing the recipe afterwards clears the served result, while the live candidate list continues to rank using the same rules. The existing five cards become the final shortlist, with the selected matches marked and the others muted. This is a visual representation of deterministic local scoring, not a network request or a claim that AI answers are being generated. Animation uses a small stage and transforms, without background effects or per-frame React updates.

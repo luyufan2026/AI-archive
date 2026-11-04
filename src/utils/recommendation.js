@@ -14,6 +14,9 @@ export const ingredients = [
   { id: 'powerful', label: 'Powerful', short: '12', description: 'More difficult work.' },
 ];
 export const defaultUsage = { input: 1, output: 0.25 };
+// The kitchen presents six concrete needs; the original scoring vocabulary stays
+// available for saved references and the readable technical archive.
+export const kitchenIngredients = ingredients.filter(({ id }) => ['coding', 'writing', 'research', 'search', 'context', 'cheap'].includes(id));
 export function estimateMonthlyCost(model, usage = defaultUsage) {
   return Math.max(0, Number(usage.input) || 0) * model.inputPrice + Math.max(0, Number(usage.output) || 0) * model.outputPrice;
 }

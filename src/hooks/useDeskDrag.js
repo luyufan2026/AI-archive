@@ -52,7 +52,7 @@ export default function useDeskDrag(targetRef, onDrop) {
       onPointerUp(event) {
         const current = pending.current;
         if (!current || current.id !== id) return;
-        if (current.active) { suppressClick.current = true; if (inside(event.clientX, event.clientY)) dropHandler.current(current.id); }
+        if (current.active) { suppressClick.current = true; if (inside(event.clientX, event.clientY)) dropHandler.current(current.id, { x: event.clientX, y: event.clientY }); }
         reset();
       },
       onPointerCancel: reset,
