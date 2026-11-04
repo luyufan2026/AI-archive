@@ -1,3 +1,4 @@
+import { translateText } from '../src/i18n/translations.js';
 import { checkedAt, companies } from '../src/data/archiveData.js';
 import { decisionModels, recommendedPool, decisionCheckedAt, formatContext, scoreDisclosure } from '../src/data/modelProfiles.js';
 import { kitchenIngredients, defaultUsage, recommendModels } from '../src/utils/recommendation.js';
@@ -17,7 +18,13 @@ function facts(items) {
 function list(items) { return `<ul>${items.map((item) => `<li>${e(item)}</li>`).join('')}</ul>`; }
 
 export const readableStyles = `
-.readable-archive { box-sizing:border-box; max-width:1050px; margin:30px auto; padding:clamp(20px,5vw,60px); background:#e7e3d7; color:#262c24; font:16px/1.65 Arial,Helvetica,sans-serif; overflow-wrap:anywhere; }
+.readable-toolbar { position:sticky; top:0; z-index:20; display:flex; justify-content:space-between; align-items:center; gap:12px; box-sizing:border-box; max-width:1050px; margin:0 auto; padding:12px clamp(16px,4vw,40px); background:#e7e3d7; color:#262c24; border-bottom:1px solid #a7ad99; font:14px/1.5 Arial,'PingFang TC','Microsoft JhengHei',sans-serif; }
+.readable-toolbar a { color:inherit; text-decoration:none; display:inline-block; padding:8px 0; }
+.readable-toolbar .readable-back { padding:10px 14px; border:1px solid #665b4b; }
+.readable-toolbar a[aria-current] { text-decoration:underline; text-underline-offset:5px; }
+.readable-toolbar a:focus-visible { outline:2px solid #93472c; outline-offset:3px; }
+html { scroll-padding-top:85px; }
+.readable-archive { box-sizing:border-box; max-width:1050px; margin:30px auto; padding:clamp(20px,5vw,60px); background:#e7e3d7; color:#262c24; font:16px/1.65 Arial,'PingFang TC','Microsoft JhengHei',sans-serif; overflow-wrap:anywhere; }
 .readable-archive * { box-sizing:border-box; }
 .readable-archive a { color:#5d3925; text-underline-offset:3px; }
 .readable-archive a:focus-visible { outline:2px solid #93472c; outline-offset:4px; }
@@ -84,18 +91,18 @@ function companyRecord([family, company]) {
 export function renderArchiveContent({ fallback = false } = {}) {
   const example = recommendModels(decisionModels, ['coding', 'cheap'], 20, defaultUsage);
   return `<main class="readable-archive" id="readable-archive">
-    <header><p class="edition">MANHATTAN NIGHT STUDIO / READABLE EDITION</p><h1>AI Archive</h1>
-      <p>An interactive AI archive and decision tool. Find an AI model for your requirements, compare models, and explore the companies, capabilities and costs behind them.</p>
-      <p>${decisionModels.length} model dossiers across ChatGPT, Claude, Gemini, Grok and DeepSeek. All 20 original records are preserved, with three additional references.</p>
-      <p class="note">${fallback ? 'This readable archive is available while the interactive studio loads, or when JavaScript is unavailable.' : 'This page contains the complete archive as ordinary HTML. Reading the records and source links requires no JavaScript.'} The immersive room, Scrib companion, filters, drag interactions and recipe builder are available in the <a href="./">interactive studio</a>.</p>
-      <nav aria-label="Readable archive sections"><a href="#experience">How the site works</a><a href="#method">Recommendation rules</a><a href="#models">All ${decisionModels.length} models</a><a href="#companies">Companies &amp; stocks</a>${fallback ? '<a href="./archive.html">Permanent readable edition</a>' : '<a href="./">Enter the studio</a>'}</nav>
+    <header><h1>AI Archive</h1>
+      <p>Model records, API prices and original sources.</p>
+      <p>${decisionModels.length} model dossiers across five AI families.</p>
+      <p class="note">${fallback ? 'This readable archive is available while the interactive studio loads, or when JavaScript is unavailable.' : 'Read the complete archive without JavaScript.'}</p>
+      <nav aria-label="Readable archive sections"><a href="#experience">How the site works</a><a href="#method">Recommendation rules</a><a href="#models">All ${decisionModels.length} models</a><a href="#companies">Companies &amp; stocks</a>${fallback ? '<a href="./archive.html">Permanent readable edition</a>' : ''}</nav>
     </header>
     <section id="experience"><h2>How the site works</h2><ul>
-      <li><strong>Cook my AI:</strong> select or drag 2–5 requirement ingredients, set an API usage budget, then choose Cook my AI. The same five eligible model cards visibly rearrange as requirements change; blocked models stay visible with a reason. Six needs are offered in the kitchen: Coding, Writing, Research, Search, Long context and Cheap. Paper ingredients drop into a pot; Scrib stirs them and plates up to three deterministic matches. The same model cards become the served shortlist, without a duplicate results grid.</li>
-      <li><strong>Compare Models:</strong> place up to three dossiers on a comparison desk to compare rates, use cases, capability notes, context, strengths and limitations.</li>
-      <li><strong>Explore Archive:</strong> search and combine family, model type, specialty and price-basis filters. Sort by name, release date or input/output price, and read original source links.</li>
-    </ul><p>Scrib is an abstract humanoid drawn from tangled SVG lines. Carrying, mixing and ticket delivery provide visual feedback. The companion does not call an AI service or generate responses. React state stores the current choices in the browser session; refresh resets them. No account, API key, backend or database is required.</p></section>
-    <section id="method"><h2>Recommendation rules &amp; API budget</h2>
+      <li><strong>Cook my AI:</strong> Choose 2–5 needs, set an API budget, then cook to get up to three matches.</li>
+      <li><strong>Compare Models:</strong> Compare up to three models side by side.</li>
+      <li><strong>Explore Archive:</strong> Search and filter all model records; sort by name, release date or token price.</li>
+    </ul></section>
+    <section id="method"><details><summary>Recommendation rules &amp; API budget</summary>
       <p>${recommendedPool.length} reference-verified model versions enter the recipe engine: ${e(recommendedPool.map((model) => model.name).join(', '))}. Model references were checked ${decisionCheckedAt}. Historical and retired versions remain in the archive and do not enter recommendations.</p>
       <p><strong>Kitchen ingredients:</strong> ${e(kitchenIngredients.map((item) => item.label).join(', '))}.</p>
       <ol><li>Select 2–5 unique recognized ingredients. Validate a nonnegative monthly budget and a positive total input/output token volume.</li>
@@ -107,16 +114,26 @@ export function renderArchiveContent({ fallback = false } = {}) {
       <h3>Worked example: Coding + Cheap</h3><p>Budget $20/month; volume 1M input + 0.25M output. Results calculated with the same engine as the interactive studio:</p>
       <div class="table-wrap"><table><thead><tr><th scope="col">Model</th><th scope="col">Editorial fit</th><th scope="col">Estimated month (USD)</th></tr></thead><tbody>${example.items.map(({ model, fit, cost }) => `<tr><td><a href="#model-${model.id}">${e(model.name)}</a></td><td>${fit}/100</td><td>${e(formatPrice(cost))}</td></tr>`).join('')}</tbody></table></div>
       <p>Each rate keeps its own reference date and conditions below. These snapshots do not automatically update; read the linked rate conditions before paying for API usage.</p>
-    </section>
+    </details></section>
     <section id="models"><h2>All ${decisionModels.length} model dossiers</h2><p>Token prices are USD per 1M text tokens, split into uncached input and output. Released means the named public launch, update or catalog reference, not training dates. Unknown information is labeled rather than assumed.</p>
       <ol class="record-index">${decisionModels.map((model) => `<li><a href="#model-${model.id}">${e(model.name)}</a></li>`).join('')}</ol>
       ${decisionModels.map(modelRecord).join('\n')}
     </section>
     <section id="companies"><h2>Companies &amp; stock snapshots</h2><p>Company information and saved parent-company quotes are from ${checkedAt}. They are not live market prices or investment recommendations. Private companies have no invented public quote. Parent-company stocks are identified separately from AI products.</p>${Object.entries(companies).map(companyRecord).join('\n')}</section>
-    <footer><p>AI Archive / Interactive Archive assignment. OpenAI Codex assisted with brainstorming, React component prototyping, interaction logic and debugging. The pencil studio and companion are editable SVG drawings; no generated backdrop is loaded.</p><p><a href="./">Interactive studio</a> · <a href="./archive.html">Readable archive</a> · ${link('https://github.com/luyufan2026/AI-archive', 'Source repository')}</p></footer>
+    <footer><p>AI Archive / Interactive Archive assignment. OpenAI Codex assisted with brainstorming, React component prototyping, interaction logic and debugging. The pencil studio and companion are editable SVG drawings; no generated backdrop is loaded.</p><p>${link('https://github.com/luyufan2026/AI-archive', 'Source repository')}</p></footer>
   </main>`;
 }
 
-export function renderReadableDocument() {
-  return `<!doctype html>\n<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Readable AI Archive: 23 model dossiers, API token rates, companies, capabilities and recommendation rules. No JavaScript required."><title>AI Archive — Readable Archive &amp; Recommendation Rules</title><style>${readableStyles}</style></head><body style="margin:0;background:#171a16">${renderArchiveContent()}</body></html>`;
+export function renderReadableDocument({ language = 'en' } = {}) {
+  const chinese = language === 'zh-Hant';
+  const toolbar = `<div class="readable-toolbar"><a class="readable-back" href="./?lang=${language}">${chinese ? '← 返回主網站' : '← Back to website'}</a><div aria-label="${chinese ? '語言' : 'Language'}"><a href="./archive.html?v=20261104" lang="en" ${!chinese ? 'aria-current="page"' : ''}>English</a><span aria-hidden="true"> / </span><a href="./archive.zh-Hant.html?v=20261104" lang="zh-Hant" ${chinese ? 'aria-current="page"' : ''}>繁體中文</a></div></div>`;
+  const content = chinese ? translateMarkup(renderArchiveContent()) : renderArchiveContent();
+  return `<!doctype html>\n<html lang="${language}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${chinese ? 'AI 檔案 — 文字檔案' : 'AI Archive — Text archive'}</title><style>${readableStyles}</style></head><body style="margin:0;background:#171a16">${toolbar}${content}</body></html>`;
+}
+function translateMarkup(markup) {
+  return markup.split(/(<[^>]+>)/g).map(part => {
+    if (part.startsWith('<')) return part.replace('href="./archive.html"', 'href="./archive.zh-Hant.html"').replace('href="./"', 'href="./?lang=zh-Hant"');
+    const decoded = part.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&amp;/g,'&');
+    return escapeHTML(translateText(decoded));
+  }).join('');
 }

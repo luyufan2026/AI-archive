@@ -16,14 +16,16 @@ export default function readableArchivePlugin() {
     },
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
-        if (req.url?.split('?')[0] !== '/archive.html') return next();
+        const path = req.url?.split('?')[0];
+        if (!['/archive.html', '/archive.zh-Hant.html'].includes(path)) return next();
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
-        res.end(renderReadableDocument());
+        res.end(renderReadableDocument({ language: path === '/archive.zh-Hant.html' ? 'zh-Hant' : 'en' }));
       });
     },
     generateBundle() {
       this.emitFile({ type: 'asset', fileName: 'archive.html', source: renderReadableDocument() });
+      this.emitFile({ type: 'asset', fileName: 'archive.zh-Hant.html', source: renderReadableDocument({ language: 'zh-Hant' }) });
     },
   };
 }

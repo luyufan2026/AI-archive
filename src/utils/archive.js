@@ -1,6 +1,7 @@
+import { translateText } from '../i18n/translations.js';
 export function filterAndSort(items, { family = 'all', type = 'all', specialty = 'all', priceBasis = 'all', query = '', sortMode = 'default' } = {}) {
   const filtered = items.filter((item) => (
-    (!query || `${item.name} ${item.family} ${item.type} ${item.strengths.join(' ')}`.toLowerCase().includes(query.trim().toLowerCase()))
+    (!query || `${item.name} ${item.family} ${item.type} ${item.strengths.join(' ')} ${translateText(item.type)} ${item.strengths.map(s => translateText(s)).join(' ')}`.toLowerCase().includes(query.trim().toLowerCase()))
     && (family === 'all' || item.family === family)
     && (type === 'all' || item.type === type)
     && (specialty === 'all' || item.strengths.includes(specialty))

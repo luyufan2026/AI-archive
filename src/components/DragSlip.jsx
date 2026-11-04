@@ -1,3 +1,4 @@
+import { Localize } from '../i18n/LanguageContext.jsx';
 import React from 'react';
 
 export default function DragSlip({ drag, elementRef }) {

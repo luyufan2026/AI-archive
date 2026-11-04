@@ -1,3 +1,4 @@
+import { Localize } from '../i18n/LanguageContext.jsx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useDeskDrag from '../hooks/useDeskDrag.js';
 import DragSlip from './DragSlip.jsx';
@@ -53,7 +54,7 @@ export default function RecipeFinder({ models, recipe, onRecipeChange, onInspect
   }
   useEffect(() => { if (motionPaused && busy) serve(); }, [motionPaused, busy]);
   const chosen = selected.map((id) => kitchenIngredients.find((item) => item.id === id)).filter(Boolean);
-  return <>
+  return <Localize><>
     <DragSlip drag={drag} elementRef={ghostRef} />
     <IngredientFlight flight={flight} targetRef={trayRef} onFinish={finishFlight} motionPaused={motionPaused} />
     <div className="workspace-heading kitchen-heading"><h1>Cook your AI.</h1><p>Pick 2–5 ingredients.</p></div>
@@ -73,5 +74,5 @@ export default function RecipeFinder({ models, recipe, onRecipeChange, onInspect
       <div ref={resultsRef} className="kitchen-files" aria-busy={busy}><LiveModelDesk models={models} recipe={recipe} onInspect={onInspect} onCompare={onCompare} motionPaused={motionPaused} result={phase === 'served' ? result : null} />{phase === 'served' && result && !result.items.length && <p className="no-recipe" role="status">{result.reason}</p>}</div>
     </div>
     <details className="method-notes"><summary>Sources & scoring</summary><p>{recommendedPool.length} eligible references, checked {decisionCheckedAt}. Older versions stay in the archive. Equal-weight editorial scores, not measured benchmarks. Monthly cost = input M × input rate + output M × output rate. Budget and required capabilities act as cutoffs. The cooking animation illustrates these local rules; it does not call an AI.</p></details>
-  </>;
+  </></Localize>;
 }

@@ -1,10 +1,11 @@
+import { Localize } from '../i18n/LanguageContext.jsx';
 import React from 'react';
 import { checkedAt } from '../data/archiveData.js';
 import { formatPrice } from '../utils/archive.js';
 
 export function CompanyDetails({ company }) {
   return (
-    <>
+    <Localize><>
       <dl className="metadata">
         <div><dt>Company</dt><dd>{company.name}</dd></div>
         <div><dt>Company location</dt><dd>{company.location}</dd></div>
@@ -24,10 +25,10 @@ export function CompanyDetails({ company }) {
       <ul className="source-links">
         {company.sources.map((source) => <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer">{source.label}</a></li>)}
       </ul>
-    </>
+    </></Localize>
   );
 }
 
 export default function CompanyCard({ family, company }) {
-  return <article className="archive-card company-card"><p className="family-name">{family}</p><h2>{company.name}</h2><CompanyDetails company={company} /></article>;
+  return <Localize><article className="archive-card company-card"><p className="family-name">{family}</p><h2>{company.name}</h2><CompanyDetails company={company} /></article></Localize>;
 }

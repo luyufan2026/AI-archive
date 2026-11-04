@@ -1,3 +1,4 @@
+import { Localize } from '../i18n/LanguageContext.jsx';
 import React, { useLayoutEffect, useRef } from 'react';
 import ScribCompanion from './ScribCompanion.jsx';
 
@@ -16,7 +17,7 @@ export function IngredientFlight({ flight, targetRef, onFinish, motionPaused }) 
     animation.onfinish = onFinish;
     return () => animation.cancel();
   }, [flight, targetRef, motionPaused, onFinish]);
-  return flight ? <div ref={node} className="ingredient-flight" aria-hidden="true">{flight.label}</div> : null;
+  return flight ? <Localize><div ref={node} className="ingredient-flight" aria-hidden="true">{flight.label}</div></Localize> : null;
 }
 
 const stages = { idle: 0, loading: 1, stirring: 2, plating: 3, served: 3 };
@@ -24,7 +25,7 @@ export default function KitchenStation({ phase, selected, trayRef, dragOver, res
   const busy = ['loading', 'stirring', 'plating'].includes(phase);
   const currentStep = phase === 'idle' && selected.length ? 1 : stages[phase];
   const title = { idle: selected.length ? 'Ready to cook.' : 'Add your ingredients.', loading: 'Into the pot.', stirring: 'Scrib is stirring.', plating: 'Plating your matches.', served: result?.items.length ? 'Order up.' : 'No match this time.' }[phase];
-  return <section className={`kitchen-station phase-${phase} ${dragOver ? 'pot-hovered' : ''}`} aria-label="Scrib’s cooking station">
+  return <Localize><section className={`kitchen-station phase-${phase} ${dragOver ? 'pot-hovered' : ''}`} aria-label="Scrib’s cooking station">
     <ol className="cooking-steps" aria-label="Cooking progress">{['Add', 'Stir', 'Serve'].map((step, i) => <li key={step} aria-current={currentStep === i + 1 ? 'step' : undefined} className={currentStep >= i + 1 ? 'step-reached' : ''}>{step}</li>)}</ol>
     <div className="kitchen-stage">
       <span className="kitchen-shelf" aria-hidden="true" />
@@ -42,5 +43,5 @@ export default function KitchenStation({ phase, selected, trayRef, dragOver, res
       <span className="kitchen-counter" aria-hidden="true" />
     </div>
     <p className="kitchen-status" role="status">{title}</p>
-  </section>;
+  </section></Localize>;
 }

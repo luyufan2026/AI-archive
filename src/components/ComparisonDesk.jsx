@@ -1,3 +1,4 @@
+import { Localize } from '../i18n/LanguageContext.jsx';
 import React, { useRef, useState } from 'react';
 import useDeskDrag from '../hooks/useDeskDrag.js';
 import DragSlip from './DragSlip.jsx';
@@ -13,7 +14,7 @@ export default function ComparisonDesk({ models, selectedIds, onToggle, onAdd, o
   const items = selectedIds.map((id) => models.find((model) => model.id === id)).filter(Boolean);
   const choices = models.filter((model) => `${model.name} ${model.family}`.toLowerCase().includes(query.toLowerCase()));
   return (
-    <>
+    <Localize><>
       <DragSlip drag={drag} elementRef={ghostRef} />
       <div className="workspace-heading"><h1>Compare models.</h1><p className="heading-aside">Choose up to 3 models.</p></div>
       <section ref={deskRef} className={`comparison-desk ${drag?.over ? 'drag-over' : ''}`} aria-label="Model comparison area">
@@ -21,6 +22,6 @@ export default function ComparisonDesk({ models, selectedIds, onToggle, onAdd, o
       </section>
       <section className="dossier-rack" aria-label="Choose models to compare"><div className="rack-heading"><div><h2>Models</h2></div><label className="search-field">FIND A MODEL<input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Name or company…" /></label></div><div className="rack-models">{choices.map((model) => <button className="rack-model" key={model.id} {...bind(model.id, model.name, items.length >= 3 && !selectedIds.includes(model.id))} onClick={() => onToggle(model.id)} aria-pressed={selectedIds.includes(model.id)} disabled={items.length >= 3 && !selectedIds.includes(model.id)}><span>{model.family}</span><strong>{model.name}</strong><i>{selectedIds.includes(model.id) ? 'ADDED −' : 'ADD +'}</i></button>)}</div>{!choices.length && <p>No dossier matches that search.</p>}</section>
       {items.length > 0 && <details className="full-comparison"><summary>Open the original technical comparison & company information</summary><ComparisonTable items={items} onRemove={onToggle} onClear={onClear} /></details>}
-    </>
+    </></Localize>
   );
 }
