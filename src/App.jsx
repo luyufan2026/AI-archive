@@ -69,7 +69,7 @@ export default function App() {
                 {!visibleItems.length && <div className="empty-state"><h2>No matching models.</h2><button onClick={resetFilters}>Reset filters</button></div>}
               </> : <><p className="archive-company-note">These are saved company and parent-company stock references from October 28, 2026, not live market quotes. Private companies have no public stock quote in this archive.</p><section className="archive-grid" aria-label="Company records">{Object.entries(companies).map(([name, company]) => <CompanyCard key={name} family={name} company={company} />)}</section></>}
             </>}
-            <footer className="workspace-footer"><span><a href="./archive.html?v=20261104">READABLE ARCHIVE ↗</a></span></footer>
+            <footer className="workspace-footer"><span><a href="./archive.html?v=20261104-light">READABLE ARCHIVE ↗</a></span></footer>
           </div></div>
         )}
       </main>

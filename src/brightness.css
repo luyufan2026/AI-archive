@@ -1,0 +1,30 @@
+/* The homepage and every workspace share one light paper palette. */
+:root { --desk-ground:#f6f5f1; --desk-paper:#fcfbf8; --screen-paper:#eeede7; --paper:#fcfbf8; --ink:#292925; --muted:#65635c; --rule:#c8c5bd; --surface:#f6f5f1; --panel:#eeede7; --card:#fcfbf8; }
+html,body,.studio-app,.is-workspace,.is-workspace .studio-header { background:var(--surface); }
+.studio-app { background-image:none; }
+.workspace-sheet { background:transparent; }
+.ingredient-card,.archive-card,.comparison-file,.live-model-file,.result-ticket { background:var(--card); border-color:#bcb8ad; }
+.archive-card::before { background:var(--card); border-color:#bcb8ad; }
+.ingredient-card:hover { background:#fffefa; }
+.ingredient-card.is-added { background:#f3eae1; }
+.kitchen-station,.comparison-desk { background:var(--surface); border-color:#bcb8ad; }
+.live-model-file.is-under-lamp { background:#fffdf6; }
+.live-model-file.is-outside,.kitchen-files .not-served { opacity:1; background:var(--panel); }
+.live-model-file.is-outside .live-file-score,.kitchen-files .not-served .live-file-score { color:var(--muted); }
+.comparison-file .file-tab { background:var(--panel); }
+.empty-comparison-slot { background:transparent; border-color:#bcb8ad; }
+.rack-model { background:var(--card); border-color:#bcb8ad; }
+.rack-model[aria-pressed='true'] { background:#f3eae1; }
+.filter-field select,.filter-bar > button,.usage-inputs input,.budget-buttons button,.section-heading button,.empty-state button { background:var(--card); border-color:#bcb8ad; color:var(--ink); }
+.budget-buttons button[aria-pressed='true'] { background:var(--ink); color:var(--paper); }
+.meter-track,th { background:var(--panel); }
+.meter-track i { background:#777064; }
+.dossier-dialog { background:var(--card); border-color:#bcb8ad; }
+.dossier-dialog::backdrop { background:#29292540; }
+.studio-notice,.archive-drop-desk,.drag-slip,.ingredient-flight,.no-recipe { background:var(--card); color:var(--ink); }
+.drag-over { background:#f3eae1 !important; }
+.cooking-pot.drag-over { background:transparent !important; }
+.pot-front { background:#e8e5dc; }
+.pot-rim { background:#d2cec2; }
+.kitchen-hob { background:#dedad0; }
+.serving-plate,.plated-files > div,.pot-ingredients button { background:var(--card); }

@@ -155,3 +155,7 @@ The script-free text archive is available as `archive.html` and `archive.zh-Hant
 ## Sparse stippled entrance
 
 The homepage uses an off-white field, one cooking entry point, quiet comparison/archive links and a stippled Scrib. The dots are seeded square subpaths combined into three cached SVG paths, rather than thousands of DOM nodes or a live noise filter. The silhouette follows Scrib’s existing body; the kitchen retains the line-drawn chef and visible cooking sequence. Ambient movement uses transforms and respects reduced motion. The earlier room drawing remains in source history but is no longer mounted on the homepage.
+
+## Shared light paper palette
+
+The cooking, comparison, archive, model-dialog and script-free text pages use the same #f6f5f1 paper background as the homepage. Cards and controls use a slightly lighter paper surface; ink, borders, selected states and the cooking drawing keep their contrast. The workspace grain overlay and dark margins around the readable archive were removed. `src/brightness.css` holds the shared presentation overrides.

@@ -18,13 +18,13 @@ function facts(items) {
 function list(items) { return `<ul>${items.map((item) => `<li>${e(item)}</li>`).join('')}</ul>`; }
 
 export const readableStyles = `
-.readable-toolbar { position:sticky; top:0; z-index:20; display:flex; justify-content:space-between; align-items:center; gap:12px; box-sizing:border-box; max-width:1050px; margin:0 auto; padding:12px clamp(16px,4vw,40px); background:#e7e3d7; color:#262c24; border-bottom:1px solid #a7ad99; font:14px/1.5 Arial,'PingFang TC','Microsoft JhengHei',sans-serif; }
+.readable-toolbar { position:sticky; top:0; z-index:20; display:flex; justify-content:space-between; align-items:center; gap:12px; box-sizing:border-box; max-width:1050px; margin:0 auto; padding:12px clamp(16px,4vw,40px); background:#f6f5f1; color:#292925; border-bottom:1px solid #a7ad99; font:14px/1.5 Arial,'PingFang TC','Microsoft JhengHei',sans-serif; }
 .readable-toolbar a { color:inherit; text-decoration:none; display:inline-block; padding:8px 0; }
 .readable-toolbar .readable-back { padding:10px 14px; border:1px solid #665b4b; }
 .readable-toolbar a[aria-current] { text-decoration:underline; text-underline-offset:5px; }
 .readable-toolbar a:focus-visible { outline:2px solid #93472c; outline-offset:3px; }
 html { scroll-padding-top:85px; }
-.readable-archive { box-sizing:border-box; max-width:1050px; margin:30px auto; padding:clamp(20px,5vw,60px); background:#e7e3d7; color:#262c24; font:16px/1.65 Arial,'PingFang TC','Microsoft JhengHei',sans-serif; overflow-wrap:anywhere; }
+.readable-archive { box-sizing:border-box; max-width:1050px; margin:30px auto; padding:clamp(20px,5vw,60px); background:#f6f5f1; color:#292925; font:16px/1.65 Arial,'PingFang TC','Microsoft JhengHei',sans-serif; overflow-wrap:anywhere; }
 .readable-archive * { box-sizing:border-box; }
 .readable-archive a { color:#5d3925; text-underline-offset:3px; }
 .readable-archive a:focus-visible { outline:2px solid #93472c; outline-offset:4px; }
@@ -43,7 +43,7 @@ html { scroll-padding-top:85px; }
 .readable-archive .record-index { columns:2; padding-left:22px; }
 .readable-archive .record-index li { break-inside:avoid; margin-bottom:8px; }
 .readable-archive .sources { display:flex; flex-wrap:wrap; gap:8px 20px; margin:20px 0; }
-.readable-archive .note { padding:18px; border-left:3px solid #829064; background:#d9deca; }
+.readable-archive .note { padding:18px; border-left:3px solid #829064; background:#eeede7; }
 .readable-archive table { border-collapse:collapse; width:100%; font-size:14px; }
 .readable-archive th,.readable-archive td { padding:12px; border:1px solid #b2b79f; text-align:left; }
 .readable-archive .table-wrap { overflow-x:auto; }
@@ -126,9 +126,9 @@ export function renderArchiveContent({ fallback = false } = {}) {
 
 export function renderReadableDocument({ language = 'en' } = {}) {
   const chinese = language === 'zh-Hant';
-  const toolbar = `<div class="readable-toolbar"><a class="readable-back" href="./?lang=${language}">${chinese ? '← 返回主網站' : '← Back to website'}</a><div aria-label="${chinese ? '語言' : 'Language'}"><a href="./archive.html?v=20261104" lang="en" ${!chinese ? 'aria-current="page"' : ''}>English</a><span aria-hidden="true"> / </span><a href="./archive.zh-Hant.html?v=20261104" lang="zh-Hant" ${chinese ? 'aria-current="page"' : ''}>繁體中文</a></div></div>`;
+  const toolbar = `<div class="readable-toolbar"><a class="readable-back" href="./?lang=${language}">${chinese ? '← 返回主網站' : '← Back to website'}</a><div aria-label="${chinese ? '語言' : 'Language'}"><a href="./archive.html?v=20261104-light" lang="en" ${!chinese ? 'aria-current="page"' : ''}>English</a><span aria-hidden="true"> / </span><a href="./archive.zh-Hant.html?v=20261104-light" lang="zh-Hant" ${chinese ? 'aria-current="page"' : ''}>繁體中文</a></div></div>`;
   const content = chinese ? translateMarkup(renderArchiveContent()) : renderArchiveContent();
-  return `<!doctype html>\n<html lang="${language}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${chinese ? 'AI 檔案 — 文字檔案' : 'AI Archive — Text archive'}</title><style>${readableStyles}</style></head><body style="margin:0;background:#171a16">${toolbar}${content}</body></html>`;
+  return `<!doctype html>\n<html lang="${language}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${chinese ? 'AI 檔案 — 文字檔案' : 'AI Archive — Text archive'}</title><style>${readableStyles}</style></head><body style="margin:0;background:#f6f5f1">${toolbar}${content}</body></html>`;
 }
 function translateMarkup(markup) {
   return markup.split(/(<[^>]+>)/g).map(part => {

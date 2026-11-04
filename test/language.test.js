@@ -35,5 +35,5 @@ test('both readable editions have a sticky return control and all dossiers witho
   const chinese=renderReadableDocument({language:'zh-Hant'});
   assert.match(chinese, /← 返回主網站/);
   assert.match(chinese, /每月 API/);
-  assert.match(chinese, /href=".\/archive.html\?v=20261104" lang="en"/);
+  assert.match(chinese, /href=".\/archive.html\?v=20261104-light" lang="en"/);
 });
