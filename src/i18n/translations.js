@@ -63,3 +63,9 @@ Object.assign(zhHant, {
  'Read the complete archive without JavaScript. Return to the':'不需要 JavaScript，也能閱讀完整檔案。返回',
  'AI Archive / Interactive Archive assignment. OpenAI Codex assisted with brainstorming, React component prototyping, interaction logic and debugging. The pencil studio and companion are editable SVG drawings; no generated backdrop is loaded.':'AI 檔案／Interactive Archive 作業。OpenAI Codex 協助構思、React 元件原型、互動邏輯與除錯。鉛筆工作室與小人均為可編輯 SVG，未載入生成背景圖片。',
 });
+Object.assign(zhHant, {
+ 'Choose your needs. Scrib serves the matches.':'選好需求，讓 Scrib 為你上菜。',
+ 'Start cooking':'開始烹調','Compare models ↗':'比較模型 ↗','All 23 models ↗':'全部 23 個模型 ↗',
+});
+
+Object.assign(zhHant, { 'A little person made of black ink dots':'由黑色墨點組成的小人' });

@@ -1,6 +1,6 @@
-# AI Archive — Manhattan Night Studio
+# AI Archive
 
-An interactive AI archive and decision tool for an Interactive Archive assignment. Enter a graphite studio on gray paper, give the resident line creature a few needs, and watch the same model files rearrange before comparing them. The original metadata archive is preserved inside the filing cabinet.
+An interactive AI archive and decision tool for an Interactive Archive assignment. Enter a sparse black-and-white page with a stippled Scrib, choose a few needs in the pencil kitchen, and watch model files rearrange before comparing them. The complete original metadata archive remains available.
 
 Live site: https://luyufan2026.github.io/AI-archive/  
 Source repository: https://github.com/luyufan2026/AI-archive
@@ -151,3 +151,7 @@ Selecting a need sends a paper slip into a visible pot. Cook my AI runs a finite
 The header offers English and 繁體中文. A React language context renders translated text and accessible labels before React displays them; no DOM-rewriting observer or translation API is used. The choice is remembered locally when browser storage is available. Switching languages preserves the recipe, filters and comparison selection. Canonical model/company names, prices, dates, source links and scoring inputs stay unchanged. Chinese keyword search also works with the original archive filters.
 
 The script-free text archive is available as `archive.html` and `archive.zh-Hant.html`, with language links and a sticky Back to website / 返回主網站 button that remains visible after following section links. Both editions contain all 23 records. Decorative edition labels, redundant return links, companion subtitles and repeated introductory copy were removed. Scoring details remain available in a collapsed section; price conditions and source attribution remain intact. The visible animation toggle has been removed.
+
+## Sparse stippled entrance
+
+The homepage uses an off-white field, one cooking entry point, quiet comparison/archive links and a stippled Scrib. The dots are seeded square subpaths combined into three cached SVG paths, rather than thousands of DOM nodes or a live noise filter. The silhouette follows Scrib’s existing body; the kitchen retains the line-drawn chef and visible cooking sequence. Ambient movement uses transforms and respects reduced motion. The earlier room drawing remains in source history but is no longer mounted on the homepage.

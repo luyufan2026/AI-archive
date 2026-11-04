@@ -1,0 +1,45 @@
+/* Sparse ink, static dots and a single moving resident. No noise filters. */
+.is-room { background:#f6f5f1; }
+.is-room .studio-header { color:#292925; }
+.grain-home { position:relative; background:#f6f5f1; min-height:700px; height:100svh; overflow:hidden; }
+.grain-home-copy { position:absolute; z-index:3; left:9%; top:29%; max-width:650px; }
+.grain-home-copy h1 { margin:0 0 23px; font:clamp(56px,7.8vw,112px)/1.05 Georgia,'Times New Roman',serif; letter-spacing:-.065em; font-weight:400; color:#292925; }
+.grain-home-copy > p { font:14px/1.6 'Courier New',monospace; margin:0 0 33px; max-width:340px; }
+.grain-start { display:flex; justify-content:space-between; gap:50px; align-items:center; background:none; padding:13px 0; min-width:190px; border-bottom:1px solid #292925; font:15px 'Courier New',monospace; color:#292925; }
+.grain-start:hover { color:#a74430; border-color:#a74430; }
+.grain-start > span { font-size:24px; }
+.grain-resident { position:absolute; right:13%; bottom:95px; z-index:2; width:250px; transition:transform .5s ease; }
+.grain-resident.is-curious { transform:translateX(-15px) rotate(-3deg); }
+.grain-resident .scrib-companion,.grain-resident .scrib-body { width:250px; }
+.grain-resident .scrib-body { height:320px; }
+.grain-resident .scrib-body svg > ellipse { opacity:.07; }
+.grain-resident .scrib-speech { left:-5%; bottom:105%; background:#f6f5f1; border:0; box-shadow:none; padding:0; width:210px; }
+.grain-resident .scrib-speech::after { display:none; }
+.grain-resident .scrib-speech p { font:italic 17px/1.4 Georgia,serif; text-align:center; }
+.grain-floor { position:absolute; left:0; bottom:45px; width:100%; height:140px; color:#696760; opacity:.55; pointer-events:none; }
+.grain-home-links { position:absolute; z-index:4; left:9%; right:9%; bottom:28px; display:flex; align-items:center; gap:30px; }
+.grain-home-links button,.grain-home-links a { background:none; padding:10px 0; font:12px/1.5 'Courier New',monospace; text-decoration:none; color:#49473f; }
+.grain-home-links button:hover,.grain-home-links a:hover { text-decoration:underline; }
+.grain-home-links a { margin-left:auto; }
+html:lang(zh-Hant) .grain-home-copy h1 { font:clamp(48px,6vw,85px)/1.2 'PingFang TC','Microsoft JhengHei',sans-serif; letter-spacing:-.06em; font-weight:400; }
+@media(max-width:900px) {
+ .grain-home-copy { top:23%; left:8%; max-width:80%; }
+ .grain-home-copy h1 { font-size:70px; }
+ .grain-resident { right:9%; width:200px; bottom:90px; }
+ .grain-resident .scrib-companion,.grain-resident .scrib-body { width:200px; }
+ .grain-resident .scrib-body { height:260px; }
+}
+@media(max-width:620px) {
+ .grain-home { height:100svh; min-height:740px; }
+ .grain-home-copy { top:22%; left:7%; }
+ .grain-home-copy h1 { font-size:57px; }
+ .grain-home-copy > p { font-size:12px; max-width:230px; }
+ .grain-start { min-width:170px; font-size:13px; }
+ .grain-resident { width:160px; right:9%; bottom:102px; }
+ .grain-resident .scrib-companion,.grain-resident .scrib-body { width:160px; }
+ .grain-resident .scrib-body { height:205px; }
+ .grain-home-links { left:7%; right:7%; bottom:20px; gap:16px; flex-wrap:wrap; }
+ .grain-home-links button,.grain-home-links a { font-size:10px; }
+ .grain-home-links a { margin-left:0; }
+ html:lang(zh-Hant) .grain-home-copy h1 { font-size:46px; }
+}
